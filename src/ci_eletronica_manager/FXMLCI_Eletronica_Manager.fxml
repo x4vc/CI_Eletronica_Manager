@@ -6,25 +6,38 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ci_eletronica_manager.FXMLCI_Eletronica_ManagerController">
    <top>
-      <Pane prefHeight="45.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" text="Button" />
-            <Button layoutX="52.0" layoutY="2.0" mnemonicParsing="false" text="Button" />
-         </children>
-      </Pane>
+      <Pane prefHeight="45.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
    </top>
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Untitled Tab 1">
+          <Tab text="Gestão Usuarios">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="268.0" prefWidth="600.0">
+                     <children>
+                        <TableView fx:id="tbViewUsuarios" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="335.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="50.0">
+                          <columns>
+                            <TableColumn fx:id="tbColIdUsuario" prefWidth="36.0" text="Id" />
+                            <TableColumn fx:id="tbColNomeUsuario" prefWidth="149.0" text="Nome completo" />
+                              <TableColumn fx:id="tbColLogin" prefWidth="89.0" text="Login" />
+                              <TableColumn fx:id="tbColAtivo" prefWidth="55.0" text="Ativo" />
+                          </columns>
+                        </TableView>
+                        <TextField layoutX="5.0" layoutY="14.0" prefHeight="25.0" prefWidth="201.0" />
+                        <Button layoutX="214.0" layoutY="14.0" mnemonicParsing="false" text="Procurar" />
+                        <TableView fx:id="tbViewUosPerfil" layoutX="354.0" layoutY="50.0" prefHeight="200.0" prefWidth="235.0">
+                          <columns>
+                            <TableColumn fx:id="tbColIdUoPerfil" prefWidth="34.0" text="Id" />
+                            <TableColumn fx:id="tbColUoNome" prefWidth="82.0" text="UO" />
+                              <TableColumn fx:id="tbColPerfil" prefWidth="114.0" text="Perfil" />
+                          </columns>
+                        </TableView>
+                     </children></AnchorPane>
             </content>
           </Tab>
-          <Tab text="Untitled Tab 2">
+          <Tab text="Gestão UOs">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
@@ -32,4 +45,13 @@
         </tabs>
       </TabPane>
    </center>
+   <bottom>
+      <Pane prefHeight="35.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" text="Adicionar" />
+            <Button layoutX="67.0" mnemonicParsing="false" text="Editar" />
+            <Button layoutX="114.0" mnemonicParsing="false" text="Sair" />
+         </children>
+      </Pane>
+   </bottom>
 </BorderPane>
