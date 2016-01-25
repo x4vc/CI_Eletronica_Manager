@@ -9,6 +9,7 @@ import Entities.TbGestaoUsuarios;
 import Entities.TbUsuario;
 import Entities.TbUsuarioPerfilUo;
 import Queries.GestaoQueries;
+import static java.lang.System.exit;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -52,11 +55,20 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
     private TableColumn tbColUoNome;
     @FXML
     private TableColumn tbColPerfil;
+    @FXML
+    private Button btnAddUsuario;
+    @FXML
+    private Button btnEditUsuario;
+    @FXML
+    private Button btnSair;
+    @FXML
+    private Button btnProcurarUsuario;
+    @FXML
+    private TextField txtNomeUsuario;
     
     @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+    private void handleBtnSair(ActionEvent event) {
+        exit(0);
     }
     private void IniciarTabGestaoUsuarios(){
         int nIdUsuario = 0;

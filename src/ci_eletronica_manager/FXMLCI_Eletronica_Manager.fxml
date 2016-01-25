@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -25,8 +26,15 @@
                               <TableColumn fx:id="tbColAtivo" prefWidth="55.0" text="Ativo" />
                           </columns>
                         </TableView>
-                        <TextField layoutX="5.0" layoutY="14.0" prefHeight="25.0" prefWidth="201.0" />
-                        <Button layoutX="214.0" layoutY="14.0" mnemonicParsing="false" text="Procurar" />
+                        <TextField fx:id="txtNomeUsuario" layoutX="5.0" layoutY="14.0" prefHeight="25.0" prefWidth="201.0" />
+                        <Button fx:id="btnProcurarUsuario" layoutX="214.0" layoutY="14.0" mnemonicParsing="false" text="Procurar nome">
+                           <graphic>
+                              <ImageView>
+                                 <image>
+                                    <Image url="@../Resources/preview_16x16.gif" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                         <TableView fx:id="tbViewUosPerfil" layoutX="354.0" layoutY="50.0" prefHeight="200.0" prefWidth="235.0">
                           <columns>
                             <TableColumn fx:id="tbColIdUoPerfil" prefWidth="34.0" text="Id" />
@@ -34,6 +42,24 @@
                               <TableColumn fx:id="tbColPerfil" prefWidth="114.0" text="Perfil" />
                           </columns>
                         </TableView>
+                        <Button fx:id="btnAddUsuario" layoutX="10.0" layoutY="250.0" mnemonicParsing="false" text="Adicionar">
+                           <graphic>
+                              <ImageView>
+                                 <image>
+                                    <Image url="@../Resources/administrator1-add-16x16.gif" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="btnEditUsuario" layoutX="126.0" layoutY="250.0" mnemonicParsing="false" text="Editar">
+                           <graphic>
+                              <ImageView>
+                                 <image>
+                                    <Image url="@../Resources/administrator3-edit-16x16.gif" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -46,12 +72,6 @@
       </TabPane>
    </center>
    <bottom>
-      <Pane prefHeight="35.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" text="Adicionar" />
-            <Button layoutX="67.0" mnemonicParsing="false" text="Editar" />
-            <Button layoutX="114.0" mnemonicParsing="false" text="Sair" />
-         </children>
-      </Pane>
+      <Button fx:id="btnSair" mnemonicParsing="false" onAction="#handleBtnSair" text="Sair" BorderPane.alignment="CENTER_RIGHT" />
    </bottom>
 </BorderPane>
