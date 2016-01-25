@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ci_eletronica_manager.FXMLCI_Eletronica_ManagerController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ci_eletronica_manager.FXMLCI_Eletronica_ManagerController">
    <top>
       <Pane prefHeight="45.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
    </top>
@@ -18,7 +18,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="268.0" prefWidth="600.0">
                      <children>
-                        <TableView fx:id="tbViewUsuarios" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="335.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="50.0">
+                        <TableView fx:id="tbViewUsuarios" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="335.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="50.0">
                           <columns>
                             <TableColumn fx:id="tbColIdUsuario" prefWidth="36.0" text="Id" />
                             <TableColumn fx:id="tbColNomeUsuario" prefWidth="149.0" text="Nome completo" />
@@ -26,8 +26,8 @@
                               <TableColumn fx:id="tbColAtivo" prefWidth="55.0" text="Ativo" />
                           </columns>
                         </TableView>
-                        <TextField fx:id="txtNomeUsuario" layoutX="5.0" layoutY="14.0" prefHeight="25.0" prefWidth="201.0" />
-                        <Button fx:id="btnProcurarUsuario" layoutX="214.0" layoutY="14.0" mnemonicParsing="false" text="Procurar nome">
+                        <TextField fx:id="txtNomeUsuario" layoutX="5.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="15.0" />
+                        <Button fx:id="btnProcurarUsuario" layoutX="214.0" layoutY="14.0" mnemonicParsing="false" text="Procurar usuário" AnchorPane.leftAnchor="215.0" AnchorPane.topAnchor="15.0">
                            <graphic>
                               <ImageView>
                                  <image>
@@ -35,14 +35,14 @@
                                  </image>
                               </ImageView>
                            </graphic></Button>
-                        <TableView fx:id="tbViewUosPerfil" layoutX="354.0" layoutY="50.0" prefHeight="200.0" prefWidth="235.0">
+                        <TableView fx:id="tbViewUosPerfil" layoutX="354.0" layoutY="50.0" prefHeight="401.0" prefWidth="274.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="50.0">
                           <columns>
                             <TableColumn fx:id="tbColIdUoPerfil" prefWidth="34.0" text="Id" />
-                            <TableColumn fx:id="tbColUoNome" prefWidth="82.0" text="UO" />
-                              <TableColumn fx:id="tbColPerfil" prefWidth="114.0" text="Perfil" />
+                            <TableColumn fx:id="tbColUoNome" prefWidth="78.0" text="UO" />
+                              <TableColumn fx:id="tbColPerfil" prefWidth="156.0" text="Perfil" />
                           </columns>
                         </TableView>
-                        <Button fx:id="btnAddUsuario" layoutX="10.0" layoutY="250.0" mnemonicParsing="false" text="Adicionar">
+                        <Button fx:id="btnAddUsuario" layoutX="14.0" layoutY="433.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Adicionar" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
                            <graphic>
                               <ImageView>
                                  <image>
@@ -51,7 +51,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnEditUsuario" layoutX="126.0" layoutY="250.0" mnemonicParsing="false" text="Editar">
+                        <Button fx:id="btnEditUsuario" layoutX="130.0" layoutY="433.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Editar" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="100.0">
                            <graphic>
                               <ImageView>
                                  <image>
