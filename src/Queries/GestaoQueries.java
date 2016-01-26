@@ -7,6 +7,7 @@ package Queries;
 
 import Entities.TbUsuario;
 import Entities.TbUsuarioPerfilUo;
+import Utilities.Seguranca;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -44,5 +45,29 @@ public class GestaoQueries {
                 .getResultList();   
         
         }
+    
+     public boolean ResetearSenha(int nIdUsuario, String strNovaSenha)throws Exception{
+        try {
+            String strEnc = "";
+            //strEnc = Seguranca.encriptar(strNovaSenha);
+            strEnc = Seguranca.stringToMD5(strNovaSenha);
+            TbUsuario novaSenha = em.find(TbUsuario.class, nIdUsuario);
+            
+            //Codigo para Create new record
+            novaSenha.setUsuSenha(strEnc);
+            
+            em.merge(novaSenha);
+            em.getTransaction().commit();            
+            em.close();
+            emf.close();
+            return true;           
+            
+        } catch (javax.persistence.PersistenceException e) {
+            e.printStackTrace();
+            em.close();
+            emf.close();
+            return false;            
+        }        
+    }
     
 }

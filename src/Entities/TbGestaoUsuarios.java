@@ -27,7 +27,9 @@ public class TbGestaoUsuarios {
     //Variaveis para TbUsuarioPerfilUo
     private IntegerProperty intp_idUsuarioPerfilUo;
     private StringProperty strp_UoNome;
+    private StringProperty strp_UoDescricao;
     private StringProperty strp_PerfilNome;
+    private BooleanProperty boolp_UsuarioPerfilUoAtivo;
     
     //Constructor TbUsuario
     public TbGestaoUsuarios(Integer nIdUsuario, String strUsuNomeCompleto, String strUsuLogin, String strUsuSenha, boolean bUsuAtivo) {
@@ -39,10 +41,12 @@ public class TbGestaoUsuarios {
     }
     
     //Constructor TbUsuarioPerfilUo    
-    public TbGestaoUsuarios(Integer nIdUsuarioPerfilUo, String strUonome, String strPerfilNome){
+    public TbGestaoUsuarios(boolean bUsuPerfilUoAtivo, Integer nIdUsuarioPerfilUo, String strUonome, String strUoDescricao, String strPerfilNome){
         intp_idUsuarioPerfilUo = new SimpleIntegerProperty(nIdUsuarioPerfilUo);
         strp_UoNome = new SimpleStringProperty(strUonome);
-        strp_PerfilNome = new SimpleStringProperty(strPerfilNome);        
+        strp_UoDescricao = new SimpleStringProperty(strUoDescricao);
+        strp_PerfilNome = new SimpleStringProperty(strPerfilNome);   
+        boolp_UsuarioPerfilUoAtivo = new SimpleBooleanProperty(bUsuPerfilUoAtivo);
     }
 
     public Integer getIntp_idUsuario() {
@@ -108,6 +112,25 @@ public class TbGestaoUsuarios {
     public void setStrp_PerfilNome(String strp_PerfilNome) {
         this.strp_PerfilNome.setValue(strp_PerfilNome);
     }
+
+    public String getStrp_UoDescricao() {
+        return strp_UoDescricao.getValue();
+    }
+
+    public void setStrp_UoDescricao(String strp_UoDescricao) {
+        this.strp_UoDescricao.setValue(strp_UoDescricao);
+    }
+
+    public Boolean getBoolp_UsuarioPerfilUoAtivo() {
+        return boolp_UsuarioPerfilUoAtivo.getValue();
+    }
+
+    public void setBoolp_UsuarioPerfilUoAtivo(Boolean boolp_UsuarioPerfilUoAtivo) {
+        this.boolp_UsuarioPerfilUoAtivo.setValue(boolp_UsuarioPerfilUoAtivo);
+    }
+    
+    
+    
     
     
 }
