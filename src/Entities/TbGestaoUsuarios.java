@@ -42,11 +42,12 @@ public class TbGestaoUsuarios {
     
     //Constructor TbUsuarioPerfilUo    
     public TbGestaoUsuarios(boolean bUsuPerfilUoAtivo, Integer nIdUsuarioPerfilUo, String strUonome, String strUoDescricao, String strPerfilNome){
+        boolp_UsuarioPerfilUoAtivo = new SimpleBooleanProperty(bUsuPerfilUoAtivo);
         intp_idUsuarioPerfilUo = new SimpleIntegerProperty(nIdUsuarioPerfilUo);
         strp_UoNome = new SimpleStringProperty(strUonome);
         strp_UoDescricao = new SimpleStringProperty(strUoDescricao);
         strp_PerfilNome = new SimpleStringProperty(strPerfilNome);   
-        boolp_UsuarioPerfilUoAtivo = new SimpleBooleanProperty(bUsuPerfilUoAtivo);
+        
     }
 
     public Integer getIntp_idUsuario() {
@@ -128,9 +129,5 @@ public class TbGestaoUsuarios {
     public void setBoolp_UsuarioPerfilUoAtivo(Boolean boolp_UsuarioPerfilUoAtivo) {
         this.boolp_UsuarioPerfilUoAtivo.setValue(boolp_UsuarioPerfilUoAtivo);
     }
-    
-    
-    
-    
     
 }

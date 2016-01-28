@@ -5,6 +5,8 @@
  */
 package Queries;
 
+import Entities.TbUnidadeOrganizacional;
+import Entities.TbUnidadeOrganizacionalGestor;
 import Entities.TbUsuario;
 import Entities.TbUsuarioPerfilUo;
 import Utilities.Seguranca;
@@ -37,11 +39,28 @@ public class GestaoQueries {
         
         }
     
+    public List<TbUnidadeOrganizacional> listaUOs() {
+        
+         //return em.createNamedQuery("TbUsuario.findAll",TbUsuario.class).getResultList();
+        return em.createNamedQuery("TbUnidadeOrganizacional.findAll",TbUnidadeOrganizacional.class)                
+                .getResultList();
+        
+        }
+    
     public List<TbUsuarioPerfilUo> getlistaUsuarioPerfilUo(int nIdUsuario) {
     //public List<TbComunicacaoInterna> getlistaTbComunicacaoInternaPorAprovar() {
         
         return em.createNamedQuery("TbUsuarioPerfilUo.findByIdUsuario",TbUsuarioPerfilUo.class) 
                 .setParameter("idUsuario", nIdUsuario)
+                .getResultList();   
+        
+        }
+    
+    public List<TbUnidadeOrganizacionalGestor> getlistaUoGestor(TbUnidadeOrganizacional nIdUO) {
+    //public List<TbComunicacaoInterna> getlistaTbComunicacaoInternaPorAprovar() {
+        
+        return em.createNamedQuery("TbUnidadeOrganizacionalGestor.findByIdUo",TbUnidadeOrganizacionalGestor.class) 
+                .setParameter("idUnidadeOrganizacional", nIdUO)
                 .getResultList();   
         
         }

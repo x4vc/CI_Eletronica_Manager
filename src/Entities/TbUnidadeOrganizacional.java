@@ -33,6 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TbUnidadeOrganizacional.findByUnorNome", query = "SELECT t FROM TbUnidadeOrganizacional t WHERE t.unorNome = :unorNome"),
     @NamedQuery(name = "TbUnidadeOrganizacional.findByUnorAtivo", query = "SELECT t FROM TbUnidadeOrganizacional t WHERE t.unorAtivo = :unorAtivo")})
 public class TbUnidadeOrganizacional implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidadeOrganizacional")
+    private Collection<TbUnidadeOrganizacionalGestor> tbUnidadeOrganizacionalGestorCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -126,6 +128,15 @@ public class TbUnidadeOrganizacional implements Serializable {
     @Override
     public String toString() {
         return "Entities.TbUnidadeOrganizacional[ idUnidadeOrganizacional=" + idUnidadeOrganizacional + " ]";
+    }
+
+    @XmlTransient
+    public Collection<TbUnidadeOrganizacionalGestor> getTbUnidadeOrganizacionalGestorCollection() {
+        return tbUnidadeOrganizacionalGestorCollection;
+    }
+
+    public void setTbUnidadeOrganizacionalGestorCollection(Collection<TbUnidadeOrganizacionalGestor> tbUnidadeOrganizacionalGestorCollection) {
+        this.tbUnidadeOrganizacionalGestorCollection = tbUnidadeOrganizacionalGestorCollection;
     }
     
 }

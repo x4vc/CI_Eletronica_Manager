@@ -35,7 +35,7 @@
                               <TableColumn fx:id="tbColPerfil" prefWidth="142.0" text="Perfil" />
                           </columns>
                         </TableView>
-                        <Button fx:id="btnAddUsuario" layoutX="14.0" layoutY="433.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Adicionar" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
+                        <Button fx:id="btnAddUsuario" layoutX="14.0" layoutY="433.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="135.0" text="Adicionar usuario" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
                            <graphic>
                               <ImageView>
                                  <image>
@@ -44,7 +44,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnEditUsuario" layoutX="130.0" layoutY="433.0" mnemonicParsing="false" onAction="#btnEditarUsuario" prefHeight="25.0" prefWidth="90.0" text="Editar" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="100.0">
+                        <Button fx:id="btnEditUsuario" layoutX="154.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnEditarUsuario" prefHeight="25.0" prefWidth="135.0" text="Editar usuário" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="155.0">
                            <graphic>
                               <ImageView>
                                  <image>
@@ -58,13 +58,49 @@
           </Tab>
           <Tab text="Gestão UOs">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="462.0" prefWidth="800.0">
+                     <children>
+                        <TableView fx:id="tbViewUOs" layoutX="25.0" layoutY="82.0" prefHeight="200.0" prefWidth="335.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="50.0">
+                          <columns>
+                            <TableColumn fx:id="tbColIdUO" prefWidth="37.0" text="Id" />
+                            <TableColumn fx:id="tbColNomeUO" prefWidth="81.0" text="UO" />
+                              <TableColumn fx:id="tbColDescricaoUO" prefWidth="147.0" text="UO Descrição" />
+                              <TableColumn fx:id="tbColUOAtivo" prefWidth="63.0" text="Status" />
+                          </columns>
+                        </TableView>
+                        <TableView fx:id="tbViewUoGestora" layoutX="372.0" layoutY="50.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="50.0">
+                          <columns>
+                            <TableColumn fx:id="tbColIdUOGestora" prefWidth="40.0" text="Id" />
+                            <TableColumn fx:id="tbColNomeUOGestora" prefWidth="116.0" text="UO Gestora" />
+                              <TableColumn fx:id="tbColDescricaoUOGestora" prefWidth="235.0" text="UO Descrição" />
+                          </columns>
+                        </TableView>
+                        <TextField fx:id="txtNomeUO" layoutX="25.0" layoutY="25.0" prefWidth="335.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="15.0" />
+                        <Button fx:id="btnAdicionarUO" layoutX="25.0" layoutY="441.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="135.0" text="Adicionar UO" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
+                           <graphic>
+                              <ImageView>
+                                 <image>
+                                    <Image url="@../Resources/group_half_add-16.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="btnEditarUO" layoutX="125.0" layoutY="441.0" mnemonicParsing="false" onAction="#btnEditarUO" prefHeight="25.0" prefWidth="135.0" text="Editar UO" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="155.0">
+                           <graphic>
+                              <ImageView>
+                                 <image>
+                                    <Image url="@../Resources/group_full_edit-16.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children></AnchorPane>
             </content>
           </Tab>
         </tabs>
       </TabPane>
    </center>
    <bottom>
-      <Button fx:id="btnSair" mnemonicParsing="false" onAction="#handleBtnSair" text="Sair" BorderPane.alignment="CENTER_RIGHT" />
+      <Button fx:id="btnSair" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSair" prefWidth="50.0" text="Sair" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>

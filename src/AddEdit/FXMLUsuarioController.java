@@ -34,9 +34,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 /**
@@ -62,19 +64,18 @@ public class FXMLUsuarioController implements Initializable {
     @FXML
     private Button btnCancelar;
     @FXML
-    private TableView tbViewUosPerfil;
+    private TableView<TbGestaoUsuarios> tbViewUosPerfil;
     @FXML
-    private TableColumn tbColIdUoPerfil;
+    private TableColumn<TbGestaoUsuarios, Integer> tbColIdUoPerfil;
     @FXML
-    private TableColumn tbColUoNome;
+    private TableColumn<TbGestaoUsuarios, String> tbColUoNome;
     @FXML
-    private TableColumn tbColUoDescricao;
+    private TableColumn<TbGestaoUsuarios, String> tbColUoDescricao;
     @FXML
-    private TableColumn tbColPerfil;
+    private TableColumn<TbGestaoUsuarios, String> tbColPerfil;
     @FXML
-    private TableColumn tbColAtivoUsuarioPerfilUo;
-    @FXML
-    private Button btnTeste;
+    private TableColumn<TbGestaoUsuarios, Boolean> tbColAtivoUsuarioPerfilUo;
+    
 
     /**
      * Initializes the controller class.
@@ -82,7 +83,18 @@ public class FXMLUsuarioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        btnCancelar.setCancelButton(true);        
     }  
+    
+    @FXML 
+    private void btnClickCancelar(ActionEvent event) throws IOException{
+        // get a handle to the stage
+        Stage stage = (Stage) btnCancelar.getScene().getWindow();
+        // do what you have to do
+        stage.close();
+        
+                
+    }
     
     @FXML
     private void btnResetearSenhaUsuario(ActionEvent event) throws IOException{        
@@ -199,11 +211,11 @@ public class FXMLUsuarioController implements Initializable {
         txtLogin.setText(dataUsuario.getStrp_UsuarioLogin());
         txtSenha.setDisable(true);
         txtSenha.setText(dataUsuario.getStrp_UsuarioSenha());
-        cmbAtivoUsuario.getItems().addAll("Verdadeiro","Falso");
+        cmbAtivoUsuario.getItems().addAll("Ativado","Desativado");
         if (true == dataUsuario.getBoolp_UsuarioAtivo()){
-            cmbAtivoUsuario.setValue("Verdadeiro");
+            cmbAtivoUsuario.setValue("Ativado");
         }else{
-            cmbAtivoUsuario.setValue("Falso");
+            cmbAtivoUsuario.setValue("Desativado");
         }
         IniciarTabGestaoUsuariosUoPerfil(dataUsuario.getIntp_idUsuario());
                 
@@ -229,6 +241,9 @@ public class FXMLUsuarioController implements Initializable {
         String strPerfil = "";
         boolean bAtivoUsuarioPerfilUo = true;
         
+        ObservableList<Boolean> namesChoiceList;
+        namesChoiceList = FXCollections.observableArrayList(true, false);
+        
              
         GestaoQueries consulta;
         consulta  = new GestaoQueries();  
@@ -246,11 +261,13 @@ public class FXMLUsuarioController implements Initializable {
         }
         
             //tbColAtivoUsuarioPerfilUo.setCellFactory(new PropertyValueFactory<TbGestaoUsuarios,Boolean>("boolp_UsuarioPerfilUoAtivo"));
+        
             tbColIdUoPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Integer>("intp_idUsuarioPerfilUo"));
             tbColUoNome.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoNome"));
             tbColUoDescricao.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoDescricao"));
-            tbColPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_PerfilNome"));
-        
+            tbColPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_PerfilNome"));            
+            tbColAtivoUsuarioPerfilUo.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Boolean>("boolp_UsuarioPerfilUoAtivo"));
+            tbColAtivoUsuarioPerfilUo.setCellFactory(ComboBoxTableCell.<TbGestaoUsuarios, Boolean>forTableColumn(namesChoiceList));
             tbViewUosPerfil.setItems(obslistaTbGestaoUsuarioPerfilUo);        
         }catch(Exception e){
             System.out.println("Erro: " + e);

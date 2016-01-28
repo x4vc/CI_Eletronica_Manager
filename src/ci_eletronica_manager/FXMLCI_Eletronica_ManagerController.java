@@ -5,7 +5,10 @@
  */
 package ci_eletronica_manager;
 
+import Entities.TbGestaoUO;
 import Entities.TbGestaoUsuarios;
+import Entities.TbUnidadeOrganizacional;
+import Entities.TbUnidadeOrganizacionalGestor;
 import Entities.TbUsuario;
 import Entities.TbUsuarioPerfilUo;
 import Queries.GestaoQueries;
@@ -79,7 +82,35 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
     private TextField txtNomeUsuario;
     
     public TbGestaoUsuarios datagUsuario;
-    //public TbGestaoUsuarios datagUsuarioUoPerfil;
+    public TbGestaoUO datagUO;
+    
+    // Variaveis para Aba UOs    
+    @FXML
+    private TextField txtNomeUO;
+    @FXML
+    private Button btnAdicionarUO;
+    @FXML
+    private Button btnEditarUO;
+    @FXML
+    private TableView<TbGestaoUO> tbViewUOs;
+    @FXML
+    private TableColumn tbColIdUO;
+    @FXML
+    private TableColumn tbColNomeUO;
+    @FXML
+    private TableColumn tbColDescricaoUO;
+    @FXML
+    private TableColumn tbColUOAtivo;
+    
+    @FXML
+    private TableView tbViewUoGestora;
+    @FXML
+    private TableColumn tbColIdUOGestora;
+    @FXML
+    private TableColumn tbColNomeUOGestora;
+    @FXML
+    private TableColumn tbColDescricaoUOGestora;    
+    //--------------FIM Variaveis Aba UOs
     
     @FXML
     private void handleBtnSair(ActionEvent event) {
@@ -226,13 +257,22 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         txtNomeUsuario.setPromptText("Preencha o nome do usuário ou login para filtrar");
-        IniciarTabGestaoUsuarios();  
-        
+        IniciarTabGestaoUsuarios();
+        txtNomeUO.setPromptText("Preencha o nome da UO para filtrar");
+        IniciarTabGestaoUOs();
         
     } 
     @FXML
     public void btnEditarUsuario(ActionEvent event) throws IOException{
-        ShowEditarUsuario(this, this.datagUsuario);
+        if (null == tbViewUsuarios.getSelectionModel().getSelectedItem()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Usuário não foi selecionado.");
+            alert.setContentText("Favor selecionar um usuário da tabela");
+            alert.showAndWait();
+        }else{
+            ShowEditarUsuario(this, this.datagUsuario);
+        }
         
     }
     
@@ -258,6 +298,182 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
             }catch (IOException ex) {
                 Logger.getLogger(FXMLCI_Eletronica_ManagerController.class.getName()).log(Level.SEVERE, null, ex);
             }
+    }
+    @FXML
+    public void btnEditarUO(ActionEvent event) throws IOException{
+        if (null == tbViewUOs.getSelectionModel().getSelectedItem()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("UO não foi selecionada.");
+            alert.setContentText("Favor selecionar uma UO da tabela");
+            alert.showAndWait();
+        }else{
+            ShowEditarUO(this, this.datagUO);
+        }
+        
+    }
+    
+    public void ShowEditarUO(final FXMLCI_Eletronica_ManagerController mainController , TbGestaoUO dataUo){
+        try{
+                Scene scene;
+                scene = new Scene(new AnchorPane());
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddEdit/FXMLUOs.fxml"));
+                scene.setRoot((Parent) loader.load());
+                
+                AddEdit.FXMLUOsController usuarioController = loader.<AddEdit.FXMLUOsController>getController(); 
+                usuarioController.setVariaveisAmbienteFXMLUsuario(mainController, dataUo);
+                
+                Stage stage = new Stage();
+                stage.setTitle("Editar UO");
+                //set icon
+                stage.getIcons().add(new Image("/Resources/user_group.png"));
+
+                stage.setScene(scene);
+                stage.initModality(Modality.APPLICATION_MODAL);     //Window Parent fica inativo
+                stage.showAndWait();
+//                                
+            }catch (IOException ex) {
+                Logger.getLogger(FXMLCI_Eletronica_ManagerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+    
+    private void IniciarTabGestaoUOs(){
+        int nIdUO = 0;
+        String strNomeUO = "";
+        String strDescricaoUO = "";        
+        boolean bAtivo = true;
+        
+        List<TbUnidadeOrganizacional> listaUOs = new ArrayList<TbUnidadeOrganizacional>();
+        ObservableList<TbGestaoUO> obslistaTbGestaoUOs = FXCollections.observableArrayList();
+        
+             
+        GestaoQueries consulta;
+        consulta  = new GestaoQueries();  
+        
+        listaUOs = consulta.listaUOs();
+        
+        for(TbUnidadeOrganizacional l : listaUOs){
+            nIdUO = l.getIdUnidadeOrganizacional();
+            strNomeUO = l.getUnorNome();
+            strDescricaoUO = l.getUnorDescricao();
+            bAtivo = l.getUnorAtivo();
+            
+            obslistaTbGestaoUOs.add(new TbGestaoUO(nIdUO, strNomeUO, strDescricaoUO, bAtivo));            
+        }
+        tbColIdUO.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Integer>("intp_idUo"));
+        tbColNomeUO.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoNome"));
+        tbColDescricaoUO.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoDescricao"));
+        tbColUOAtivo.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Boolean>("boolp_UoAtivo"));
+        
+        // 1. Wrap the ObservableList in a FilteredList (initially display all data).
+        FilteredList<TbGestaoUO> filteredData = new FilteredList<>(obslistaTbGestaoUOs, p -> true);
+        
+        // 2. Set the filter Predicate whenever the filter changes.
+        txtNomeUO.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(TbGestaoUO -> {
+                // If filter text is empty, display all persons.
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare first name and last name of every person with filter text.
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (TbGestaoUO.getStrp_UoNome().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches first name.
+                } else if (TbGestaoUO.getStrp_UoDescricao().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches last name.
+                }
+                return false; // Does not match.
+            });
+        });
+        
+        // 3. Wrap the FilteredList in a SortedList. 
+        SortedList<TbGestaoUO> sortedData = new SortedList<>(filteredData);
+        
+        // 4. Bind the SortedList comparator to the TableView comparator.
+        sortedData.comparatorProperty().bind(tbViewUOs.comparatorProperty());
+        
+        // 5. Add sorted (and filtered) data to the table.
+        tbViewUOs.setItems(sortedData);
+
+        
+        //tbViewUsuarios.setItems(obslistaTbGestaoUsuarios);
+        
+        //--------------------------------------------------------
+        
+        
+        tbViewUOs.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+                @Override
+                public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+                //Check whether item is selected and set value of selected item to Label
+                    try{
+                        //TableView<TbCIPorAprovar> TbViewGeral = new TableView<>();
+                        if(tbViewUOs.getSelectionModel().getSelectedItem() != null){
+                            TbGestaoUO dataUO = tbViewUOs.getSelectionModel().getSelectedItem();                           
+                            datagUO = tbViewUOs.getSelectionModel().getSelectedItem();
+                            int nlIdUO = 0;
+                            nlIdUO = dataUO.getIntp_idUo();
+                            //IniciarTabGestaoUsuariosUoPerfil(nlIdUsuario);
+                            IniciarTabGestaoUoGestor(nlIdUO);
+                            
+                        }
+                        }catch (Exception e) {
+                            e.printStackTrace();
+                            //labelMessage.setText("Error on get row Data");
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Erro");
+                            alert.setHeaderText("Erro na carga da TableView");
+                            alert.setContentText(e.getMessage());
+                            alert.showAndWait();
+                    }
+                }
+            });                
+        
+    }
+    private void IniciarTabGestaoUoGestor(int nIdUO){
+        int nlTblViewGeralSize = 0;
+        //Devemos fazer refresh da tableView
+        try {
+        nlTblViewGeralSize = tbViewUoGestora.getItems().size();
+        
+        if (nlTblViewGeralSize > 0){
+            tbViewUoGestora.getItems().clear();
+        }
+        } catch (Exception e){
+            System.out.println("Erro: " + e);
+        }
+        
+        //Preenchemos com os valores de acordo ao Id do usuário
+        List<TbUnidadeOrganizacionalGestor> listaUoGestor = new ArrayList<TbUnidadeOrganizacionalGestor>();
+        ObservableList<TbGestaoUO> obslistaTbGestaoUoGestor = FXCollections.observableArrayList();
+        
+        TbUnidadeOrganizacional nIdUoGestor = new TbUnidadeOrganizacional(nIdUO);
+        int nIdUnidadeOrganizacionalGestor = 0;
+        String strUoNomeGestor = "";
+        String strUODescricaoGestor = "";        
+        boolean bAtivoUoGestor = true;
+        
+             
+        GestaoQueries consulta;
+        consulta  = new GestaoQueries();  
+        
+        listaUoGestor = consulta.getlistaUoGestor(nIdUoGestor);
+        
+        for(TbUnidadeOrganizacionalGestor l : listaUoGestor){
+            nIdUnidadeOrganizacionalGestor = l.getIdUoge();
+            strUoNomeGestor = l.getIdUoGestor().getUnorNome();
+            strUODescricaoGestor = l.getIdUoGestor().getUnorDescricao();
+            bAtivoUoGestor = l.getUogeAtivo();
+            
+            obslistaTbGestaoUoGestor.add(new TbGestaoUO(bAtivoUoGestor, nIdUnidadeOrganizacionalGestor, strUoNomeGestor, strUODescricaoGestor ));            
+        }
+        tbColIdUOGestora.setCellValueFactory(new PropertyValueFactory<TbGestaoUO,Integer>("intp_idUoGe"));
+        tbColNomeUOGestora.setCellValueFactory(new PropertyValueFactory<TbGestaoUO,String>("strp_UoNomeGestor"));
+        tbColDescricaoUOGestora.setCellValueFactory(new PropertyValueFactory<TbGestaoUO,String>("strp_UoDescricaoGestor"));
+        //tbColPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoU),String>("strp_PerfilNome"));
+        
+        tbViewUoGestora.setItems(obslistaTbGestaoUoGestor);        
     }
     
 }
