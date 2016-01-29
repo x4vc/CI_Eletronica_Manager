@@ -66,7 +66,7 @@ public class FXMLUOsController implements Initializable {
         btnCancelar.setCancelButton(true);
     }
     
-    public void setVariaveisAmbienteFXMLUsuario(final FXMLCI_Eletronica_ManagerController mainController, TbGestaoUO dataUsuario){
+    public void setVariaveisAmbienteFXMLUO(final FXMLCI_Eletronica_ManagerController mainController, TbGestaoUO dataUsuario){
         txtIdUO.setDisable(true);
         txtIdUO.setText(String.valueOf(dataUsuario.getIntp_idUo()));
         txtUoNome.setText(dataUsuario.getStrp_UoNome());
@@ -120,6 +120,7 @@ public class FXMLUOsController implements Initializable {
         tbColIdUOGestora.setCellValueFactory(new PropertyValueFactory<TbGestaoUO,Integer>("intp_idUoGe"));
         tbColNomeUOGestora.setCellValueFactory(new PropertyValueFactory<TbGestaoUO,String>("strp_UoNomeGestor"));
         tbColDescricaoUOGestora.setCellValueFactory(new PropertyValueFactory<TbGestaoUO,String>("strp_UoDescricaoGestor"));
+        tbColAtivoUOGestor.setCellValueFactory(new PropertyValueFactory<TbGestaoUO,Boolean>("boolp_UoGestorAtivo"));
         //tbColPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoU),String>("strp_PerfilNome"));
         
         tbViewUoGestora.setItems(obslistaTbGestaoUoGestor);   

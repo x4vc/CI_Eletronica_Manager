@@ -261,7 +261,13 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
         txtNomeUO.setPromptText("Preencha o nome da UO para filtrar");
         IniciarTabGestaoUOs();
         
-    } 
+    }
+    @FXML
+    public void btnAddNovoUsuario(ActionEvent event) throws IOException {
+        TbGestaoUsuarios addNewUsuario = new TbGestaoUsuarios(0,"","","", true);
+        ShowEditarUsuario(this, addNewUsuario, "Adicionar novo usuário");
+        
+    }
     @FXML
     public void btnEditarUsuario(ActionEvent event) throws IOException{
         if (null == tbViewUsuarios.getSelectionModel().getSelectedItem()){
@@ -271,12 +277,12 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
             alert.setContentText("Favor selecionar um usuário da tabela");
             alert.showAndWait();
         }else{
-            ShowEditarUsuario(this, this.datagUsuario);
+            ShowEditarUsuario(this, this.datagUsuario, "Editar usuário");
         }
         
     }
     
-    public void ShowEditarUsuario(final FXMLCI_Eletronica_ManagerController mainController , TbGestaoUsuarios dataUsuario){
+    public void ShowEditarUsuario(final FXMLCI_Eletronica_ManagerController mainController , TbGestaoUsuarios dataUsuario, String strTitulo){
         try{
                 Scene scene;
                 scene = new Scene(new AnchorPane());
@@ -287,7 +293,7 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
                 usuarioController.setVariaveisAmbienteFXMLUsuario(mainController, dataUsuario);
                 
                 Stage stage = new Stage();
-                stage.setTitle("Editar Usuário");
+                stage.setTitle(strTitulo);
                 //set icon
                 stage.getIcons().add(new Image("/Resources/administrator1-add-16x16.gif"));
 
@@ -308,12 +314,18 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
             alert.setContentText("Favor selecionar uma UO da tabela");
             alert.showAndWait();
         }else{
-            ShowEditarUO(this, this.datagUO);
+            ShowEditarUO(this, this.datagUO, "Editar UO");
         }
         
     }
+    @FXML
+    public void btnAddNovaUO(ActionEvent event) throws IOException{
+        TbGestaoUO addNovaUO = new TbGestaoUO(0,"", "", true);
+        ShowEditarUO(this, addNovaUO, "Adicionar nova UO");
+        
+    }
     
-    public void ShowEditarUO(final FXMLCI_Eletronica_ManagerController mainController , TbGestaoUO dataUo){
+    public void ShowEditarUO(final FXMLCI_Eletronica_ManagerController mainController , TbGestaoUO dataUo, String strTitulo){
         try{
                 Scene scene;
                 scene = new Scene(new AnchorPane());
@@ -321,10 +333,10 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
                 scene.setRoot((Parent) loader.load());
                 
                 AddEdit.FXMLUOsController usuarioController = loader.<AddEdit.FXMLUOsController>getController(); 
-                usuarioController.setVariaveisAmbienteFXMLUsuario(mainController, dataUo);
+                usuarioController.setVariaveisAmbienteFXMLUO(mainController, dataUo);
                 
                 Stage stage = new Stage();
-                stage.setTitle("Editar UO");
+                stage.setTitle(strTitulo);
                 //set icon
                 stage.getIcons().add(new Image("/Resources/user_group.png"));
 

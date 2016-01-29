@@ -30,7 +30,7 @@ public class TbGestaoUsuarios {
     private StringProperty strp_UoDescricao;
     private StringProperty strp_PerfilNome;
     private BooleanProperty boolp_UsuarioPerfilUoAtivo;
-    
+       
     //Constructor TbUsuario
     public TbGestaoUsuarios(Integer nIdUsuario, String strUsuNomeCompleto, String strUsuLogin, String strUsuSenha, boolean bUsuAtivo) {
         intp_idUsuario = new SimpleIntegerProperty(nIdUsuario);

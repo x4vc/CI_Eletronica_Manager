@@ -35,7 +35,7 @@
                               <TableColumn fx:id="tbColPerfil" prefWidth="142.0" text="Perfil" />
                           </columns>
                         </TableView>
-                        <Button fx:id="btnAddUsuario" layoutX="14.0" layoutY="433.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="135.0" text="Adicionar usuario" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
+                        <Button fx:id="btnAddUsuario" layoutX="14.0" layoutY="433.0" mnemonicParsing="false" onAction="#btnAddNovoUsuario" prefHeight="25.0" prefWidth="135.0" text="Adicionar usuario" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
                            <graphic>
                               <ImageView>
                                  <image>
@@ -76,7 +76,7 @@
                           </columns>
                         </TableView>
                         <TextField fx:id="txtNomeUO" layoutX="25.0" layoutY="25.0" prefWidth="335.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="15.0" />
-                        <Button fx:id="btnAdicionarUO" layoutX="25.0" layoutY="441.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="135.0" text="Adicionar UO" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
+                        <Button fx:id="btnAdicionarUO" layoutX="25.0" layoutY="441.0" mnemonicParsing="false" onAction="#btnAddNovaUO" prefHeight="25.0" prefWidth="135.0" text="Adicionar UO" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
                            <graphic>
                               <ImageView>
                                  <image>
@@ -101,6 +101,6 @@
       </TabPane>
    </center>
    <bottom>
-      <Button fx:id="btnSair" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSair" prefWidth="50.0" text="Sair" BorderPane.alignment="CENTER" />
+      <Button fx:id="btnSair" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSair" prefWidth="135.0" text="Sair" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>
