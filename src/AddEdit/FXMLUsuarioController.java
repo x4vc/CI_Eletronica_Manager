@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -64,6 +66,12 @@ public class FXMLUsuarioController implements Initializable {
     @FXML
     private Button btnCancelar;
     @FXML
+    private Button btnAddUo;
+    @FXML
+    private Button btnDeleteUo;
+    @FXML
+    private Button btnEditarUo;
+    @FXML
     private TableView<TbGestaoUsuarios> tbViewUosPerfil;
     @FXML
     private TableColumn<TbGestaoUsuarios, Integer> tbColIdUoPerfil;
@@ -75,6 +83,14 @@ public class FXMLUsuarioController implements Initializable {
     private TableColumn<TbGestaoUsuarios, String> tbColPerfil;
     @FXML
     private TableColumn<TbGestaoUsuarios, Boolean> tbColAtivoUsuarioPerfilUo;
+    
+    //Valores nTipoCrud:
+    //1 ==> Salvar novo registro
+    //2 ==> Editar registro*/
+    private int nTipoCrud = 0; 
+    
+    //-----------------------------
+    TbUsuarioPerfilUo datagUsuario;
     
 
     /**
@@ -204,19 +220,48 @@ public class FXMLUsuarioController implements Initializable {
         });
     }
     
-    public void setVariaveisAmbienteFXMLUsuario(final FXMLCI_Eletronica_ManagerController mainController, TbGestaoUsuarios dataUsuario){
+    public void setVariaveisAmbienteFXMLUsuario(final FXMLCI_Eletronica_ManagerController mainController, TbGestaoUsuarios dataUsuario, int nTipoCrud){
         txtIdUsuario.setDisable(true);
         txtIdUsuario.setText(String.valueOf(dataUsuario.getIntp_idUsuario()));
         txtNomeCompleto.setText(dataUsuario.getStrp_UsuarioNomeCompleto());
         txtLogin.setText(dataUsuario.getStrp_UsuarioLogin());
-        txtSenha.setDisable(true);
-        txtSenha.setText(dataUsuario.getStrp_UsuarioSenha());
-        cmbAtivoUsuario.getItems().addAll("Ativado","Desativado");
+//        txtSenha.setDisable(true);
+//        txtSenha.setText(dataUsuario.getStrp_UsuarioSenha());
+        cmbAtivoUsuario.getItems().addAll("Ativado","Desativado");        
         if (true == dataUsuario.getBoolp_UsuarioAtivo()){
             cmbAtivoUsuario.setValue("Ativado");
         }else{
             cmbAtivoUsuario.setValue("Desativado");
         }
+        
+        //Valores nTipoCrud:
+        //1 ==> Salvar novo registro
+        //2 ==> Editar registro*/
+        this.nTipoCrud = nTipoCrud;
+        
+        switch (nTipoCrud){
+            case 1: 
+                txtSenha.setDisable(false);
+                txtSenha.setText(dataUsuario.getStrp_UsuarioSenha());
+                btnResetearSenha.setVisible(false);
+                btnEditarUo.setVisible(false);
+                btnAddUo.setVisible(true);
+                btnDeleteUo.setVisible(true);
+                break;
+            case 2:
+                txtSenha.setDisable(true);
+                txtSenha.setText(dataUsuario.getStrp_UsuarioSenha());
+                btnResetearSenha.setVisible(true);
+                btnEditarUo.setVisible(true);
+                btnAddUo.setVisible(false);
+                btnDeleteUo.setVisible(false);
+                break;
+            default:
+                break;
+        }
+        //-------------------------------------------------------------
+        
+        
         IniciarTabGestaoUsuariosUoPerfil(dataUsuario.getIntp_idUsuario());
                 
 
@@ -249,30 +294,61 @@ public class FXMLUsuarioController implements Initializable {
         consulta  = new GestaoQueries();  
         
         listaUsuarioPerfilUo = consulta.getlistaUsuarioPerfilUo(nIdUsuario);
-        try {
-        for(TbUsuarioPerfilUo l : listaUsuarioPerfilUo){
-            nIdUsuarioPerfilUo = l.getIdUsuarioPerfilUo();
-            strUoNome = l.getIdUnidadeOrganizacional().getUnorNome();
-            strUODescricao = l.getIdUnidadeOrganizacional().getUnorDescricao();
-            strPerfil = l.getIdUsuarioPerfil().getPeusDescricao();
-            bAtivoUsuarioPerfilUo = l.getUspuAtivo();
-            
-            obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(bAtivoUsuarioPerfilUo, nIdUsuarioPerfilUo, strUoNome, strUODescricao, strPerfil));            
-        }
+        //try {
+            for(TbUsuarioPerfilUo l : listaUsuarioPerfilUo){
+                nIdUsuarioPerfilUo = l.getIdUsuarioPerfilUo();
+                strUoNome = l.getIdUnidadeOrganizacional().getUnorNome();
+                strUODescricao = l.getIdUnidadeOrganizacional().getUnorDescricao();
+                strPerfil = l.getIdUsuarioPerfil().getPeusDescricao();
+                bAtivoUsuarioPerfilUo = l.getUspuAtivo();
+
+                obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(bAtivoUsuarioPerfilUo, nIdUsuarioPerfilUo, strUoNome, strUODescricao, strPerfil));            
+            }
+
+                //tbColAtivoUsuarioPerfilUo.setCellFactory(new PropertyValueFactory<TbGestaoUsuarios,Boolean>("boolp_UsuarioPerfilUoAtivo"));
+
+                tbColIdUoPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Integer>("intp_idUsuarioPerfilUo"));
+                tbColUoNome.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoNome"));
+                tbColUoDescricao.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoDescricao"));
+                tbColPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_PerfilNome"));            
+                tbColAtivoUsuarioPerfilUo.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Boolean>("boolp_UsuarioPerfilUoAtivo"));
+                tbColAtivoUsuarioPerfilUo.setCellFactory(ComboBoxTableCell.<TbGestaoUsuarios, Boolean>forTableColumn(namesChoiceList));
+                tbViewUosPerfil.setItems(obslistaTbGestaoUsuarioPerfilUo);        
+//        }catch(Exception e){
+//            System.out.println("Erro: " + e);
+//                    
+//        }
         
-            //tbColAtivoUsuarioPerfilUo.setCellFactory(new PropertyValueFactory<TbGestaoUsuarios,Boolean>("boolp_UsuarioPerfilUoAtivo"));
+        tbViewUosPerfil.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+                @Override
+                public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+                //Check whether item is selected and set value of selected item to Label
+                    try{
+                        //TableView<TbCIPorAprovar> TbViewGeral = new TableView<>();
+                        if(tbViewUosPerfil.getSelectionModel().getSelectedItem() != null){
+                            TbGestaoUsuarios dataUsuarios = tbViewUosPerfil.getSelectionModel().getSelectedItem();                           
+                            //datagUsuario = tbViewUosPerfil.getSelectionModel().getSelectedItem();
+                            boolean bUsuarioPerfilUo = false;
+                            int nlIdUsuarioPerfil = 0;
+                            int nlIdUsuario = 0;
+                            nlIdUsuarioPerfil = dataUsuarios.getIntp_idUsuarioPerfilUo();
+                            bUsuarioPerfilUo = dataUsuarios.getBoolp_UsuarioPerfilUoAtivo();
+                            nlIdUsuario = Integer.parseInt(txtIdUsuario.getText());
+                            //IniciarTabGestaoUsuariosUoPerfil(nlIdUsuario);
+                            
+                        }
+                        }catch (Exception e) {
+                            e.printStackTrace();
+                            //labelMessage.setText("Error on get row Data");
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Erro");
+                            alert.setHeaderText("Erro na carga da TableView");
+                            alert.setContentText(e.getMessage());
+                            alert.showAndWait();
+                    }
+                }
+            });
         
-            tbColIdUoPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Integer>("intp_idUsuarioPerfilUo"));
-            tbColUoNome.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoNome"));
-            tbColUoDescricao.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoDescricao"));
-            tbColPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_PerfilNome"));            
-            tbColAtivoUsuarioPerfilUo.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Boolean>("boolp_UsuarioPerfilUoAtivo"));
-            tbColAtivoUsuarioPerfilUo.setCellFactory(ComboBoxTableCell.<TbGestaoUsuarios, Boolean>forTableColumn(namesChoiceList));
-            tbViewUosPerfil.setItems(obslistaTbGestaoUsuarioPerfilUo);        
-        }catch(Exception e){
-            System.out.println("Erro: " + e);
-                    
-        }
         
     }
     
