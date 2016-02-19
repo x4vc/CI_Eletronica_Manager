@@ -8,6 +8,7 @@ package Queries;
 import Entities.TbUnidadeOrganizacional;
 import Entities.TbUnidadeOrganizacionalGestor;
 import Entities.TbUsuario;
+import Entities.TbUsuarioPerfil;
 import Entities.TbUsuarioPerfilUo;
 import Utilities.Seguranca;
 import java.util.List;
@@ -43,6 +44,14 @@ public class GestaoQueries {
         
          //return em.createNamedQuery("TbUsuario.findAll",TbUsuario.class).getResultList();
         return em.createNamedQuery("TbUnidadeOrganizacional.findAll",TbUnidadeOrganizacional.class)                
+                .getResultList();
+        
+        }
+    
+     public List<TbUsuarioPerfil> listaPerfis() {
+        
+         //return em.createNamedQuery("TbUsuario.findAll",TbUsuario.class).getResultList();
+        return em.createNamedQuery("TbUsuarioPerfil.findAll",TbUsuarioPerfil.class)                
                 .getResultList();
         
         }

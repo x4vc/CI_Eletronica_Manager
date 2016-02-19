@@ -265,7 +265,7 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
     @FXML
     public void btnAddNovoUsuario(ActionEvent event) throws IOException {
         TbGestaoUsuarios addNewUsuario = new TbGestaoUsuarios(0,"","","", true);
-        ShowEditarUsuario(this, addNewUsuario, "Adicionar novo usuário");
+        ShowEditarUsuario(this, addNewUsuario, "Adicionar novo usuário",1);
         
     }
     @FXML
@@ -277,12 +277,12 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
             alert.setContentText("Favor selecionar um usuário da tabela");
             alert.showAndWait();
         }else{
-            ShowEditarUsuario(this, this.datagUsuario, "Editar usuário");
+            ShowEditarUsuario(this, this.datagUsuario, "Editar usuário",2);
         }
         
     }
     
-    public void ShowEditarUsuario(final FXMLCI_Eletronica_ManagerController mainController , TbGestaoUsuarios dataUsuario, String strTitulo){
+    public void ShowEditarUsuario(final FXMLCI_Eletronica_ManagerController mainController , TbGestaoUsuarios dataUsuario, String strTitulo, int nTipoCrud){
         try{
                 Scene scene;
                 scene = new Scene(new AnchorPane());
@@ -290,7 +290,7 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
                 scene.setRoot((Parent) loader.load());
                 
                 AddEdit.FXMLUsuarioController usuarioController = loader.<AddEdit.FXMLUsuarioController>getController(); 
-                usuarioController.setVariaveisAmbienteFXMLUsuario(mainController, dataUsuario);
+                usuarioController.setVariaveisAmbienteFXMLUsuario(mainController, dataUsuario, nTipoCrud);
                 
                 Stage stage = new Stage();
                 stage.setTitle(strTitulo);

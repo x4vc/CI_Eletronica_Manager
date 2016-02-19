@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -22,9 +24,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -38,8 +43,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -356,6 +364,34 @@ public class FXMLUsuarioController implements Initializable {
     public void btnTeste(ActionEvent event) throws IOException{
         IniciarTabGestaoUsuariosUoPerfil(10);
         
+    }
+    
+    @FXML 
+    private void btnAdicionarUOPerfil(ActionEvent event) throws IOException{
+        try{
+                Scene scene;
+                scene = new Scene(new AnchorPane());
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddEdit/FXMLAddEditUOPerfilUsuario.fxml"));
+                scene.setRoot((Parent) loader.load());
+                
+                AddEdit.FXMLAddEditUOPerfilUsuarioController usuarioController = loader.<AddEdit.FXMLAddEditUOPerfilUsuarioController>getController(); 
+                //usuarioController.setVariaveisAmbienteFXMLUsuario(mainController, dataUsuario, nTipoCrud);
+                
+                Stage stage = new Stage();
+                stage.setTitle("Adicionar UO e Perfil do Usuário");
+                //set icon
+                stage.getIcons().add(new Image("/Resources/administrator1-add-16x16.gif"));
+
+                stage.setScene(scene);
+                stage.initModality(Modality.APPLICATION_MODAL);     //Window Parent fica inativo
+                stage.showAndWait();
+//                                
+            }catch (IOException ex) {
+                Logger.getLogger(FXMLCI_Eletronica_ManagerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        
+                
     }
             
     
