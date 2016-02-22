@@ -6,16 +6,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="AddEdit.FXMLAddEditUOPerfilUsuarioController">
+<AnchorPane id="AnchorPane" prefHeight="377.0" prefWidth="603.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddEdit.FXMLAddEditUOPerfilUsuarioController">
    <children>
-      <ChoiceBox fx:id="chbUo" layoutX="31.0" layoutY="40.0" prefHeight="25.0" prefWidth="250.0" />
+      <ChoiceBox fx:id="chbUo" layoutX="31.0" layoutY="8.0" prefHeight="25.0" prefWidth="250.0" />
       <ChoiceBox fx:id="chbPerfilUsuario" layoutX="300.0" layoutY="40.0" prefHeight="25.0" prefWidth="174.0" />
-      <ListView fx:id="listItensUOPerfil" layoutX="31.0" layoutY="100.0" prefHeight="200.0" prefWidth="442.0" />
+      <ListView fx:id="listItensUOPerfil" layoutX="31.0" layoutY="79.0" prefHeight="221.0" prefWidth="442.0" />
       <Button fx:id="btnOK" layoutX="199.0" layoutY="333.0" mnemonicParsing="false" prefWidth="94.0" text="OK" />
       <Button fx:id="btnCancelar" layoutX="307.0" layoutY="333.0" mnemonicParsing="false" onAction="#btnClickCancelar" prefWidth="94.0" text="Cancelar" />
-      <Button fx:id="btnAdicionar" layoutX="501.0" layoutY="40.0" mnemonicParsing="false" text="Adicionar Item" />
-      <Button fx:id="btDeletar" layoutX="501.0" layoutY="100.0" mnemonicParsing="false" prefWidth="94.0" text="Deletar Item" />
-      <ComboBox fx:id="cbUo" layoutX="31.0" layoutY="75.0" prefHeight="25.0" prefWidth="250.0" />
+      <Button fx:id="btnAdicionar" layoutX="501.0" layoutY="40.0" mnemonicParsing="false" onAction="#btnClickAddUO" text="Adicionar Item" AnchorPane.rightAnchor="10.0" />
+      <Button fx:id="btDeletar" layoutX="501.0" layoutY="79.0" mnemonicParsing="false" onAction="#btnClickDeleteUO" prefWidth="94.0" text="Deletar Item" AnchorPane.rightAnchor="10.0" />
+      <ComboBox fx:id="cbUo" layoutX="31.0" layoutY="40.0" prefHeight="25.0" prefWidth="250.0" />
    </children>
 </AnchorPane>
