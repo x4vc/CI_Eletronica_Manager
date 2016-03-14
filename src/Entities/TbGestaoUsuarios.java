@@ -26,11 +26,24 @@ public class TbGestaoUsuarios {
     
     //Variaveis para TbUsuarioPerfilUo
     private IntegerProperty intp_idUsuarioPerfilUo;
+    
+    private IntegerProperty intp_idUnidadeOrganizacional;
     private StringProperty strp_UoNome;
     private StringProperty strp_UoDescricao;
+    
+    private IntegerProperty intp_idUsuarioPerfil;
     private StringProperty strp_PerfilNome;
     private BooleanProperty boolp_UsuarioPerfilUoAtivo;
-       
+
+    //Constructor TbUsuario para adicionar relação UO<==>Perfil
+    public TbGestaoUsuarios(Integer nIdUO, String strNomeUO, Integer nIdTipoPerfil, String strNomeTipoPerfil) {
+        intp_idUnidadeOrganizacional = new SimpleIntegerProperty(nIdUO);
+        strp_UoNome = new SimpleStringProperty(strNomeUO);
+        intp_idUsuarioPerfil = new SimpleIntegerProperty(nIdTipoPerfil);
+        strp_PerfilNome = new SimpleStringProperty(strNomeTipoPerfil);
+    }
+    //------------------------------------------------------------------
+    
     //Constructor TbUsuario
     public TbGestaoUsuarios(Integer nIdUsuario, String strUsuNomeCompleto, String strUsuLogin, String strUsuSenha, boolean bUsuAtivo) {
         intp_idUsuario = new SimpleIntegerProperty(nIdUsuario);
@@ -128,6 +141,22 @@ public class TbGestaoUsuarios {
 
     public void setBoolp_UsuarioPerfilUoAtivo(Boolean boolp_UsuarioPerfilUoAtivo) {
         this.boolp_UsuarioPerfilUoAtivo.setValue(boolp_UsuarioPerfilUoAtivo);
+    }
+    
+    public Integer getIntp_idUnidadeOrganizacional() {
+        return intp_idUnidadeOrganizacional.getValue();
+    }
+
+    public void setIntp_idUnidadeOrganizacional(Integer intp_idUnidadeOrganizacional) {
+        this.intp_idUnidadeOrganizacional.setValue(intp_idUnidadeOrganizacional);
+    }
+
+    public Integer getIntp_idUsuarioPerfil() {
+        return intp_idUsuarioPerfil.getValue();
+    }
+
+    public void setIntp_idUsuarioPerfil(Integer intp_idUsuarioPerfil) {
+        this.intp_idUsuarioPerfil.setValue(intp_idUsuarioPerfil);
     }
     
 }

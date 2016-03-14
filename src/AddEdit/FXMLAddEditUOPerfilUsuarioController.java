@@ -16,12 +16,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -31,7 +29,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -59,7 +59,18 @@ public class FXMLAddEditUOPerfilUsuarioController implements Initializable {
     Button btDeletar;
     @FXML
     ListView listItensUOPerfil;
+    @FXML
+    TableView<TbGestaoUsuarios> tbviewListaUoPerfil;
+    @FXML
+    TableColumn tbClIdUo;
+    @FXML
+    TableColumn tbClNomeUO;
+    @FXML
+    TableColumn tbClIdTipoPerfil;
+    @FXML
+    TableColumn tbClNomePerfil;
     
+    private ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
@@ -74,7 +85,7 @@ public class FXMLAddEditUOPerfilUsuarioController implements Initializable {
         cbUo.setEditable(false);
         
         //Ocultamos o choicebox das Uos porque vamos utilizar o combobox
-        chbUo.setVisible(false);
+        //chbUo.setVisible(false);
         //--------------------------------
         
         //Preenchemos UOs no combobox
@@ -127,8 +138,8 @@ public class FXMLAddEditUOPerfilUsuarioController implements Initializable {
         });
         */
         
-        chbUo.setItems(choicesUOs);        
-        chbUo.getSelectionModel().select(0);
+//        chbUo.setItems(choicesUOs);        
+//        chbUo.getSelectionModel().select(0);
         
         //cbUo.setItems(filteredItems);
         
@@ -200,20 +211,27 @@ public class FXMLAddEditUOPerfilUsuarioController implements Initializable {
         System.out.println("Perfil = " + choicePerfilUsuario.id + " " + choicePerfilUsuario.displayString + " " + choicePerfilUsuario.displayString2);
         
         //ObservableList<Choice> U0PerfilUsuario = FXCollections.observableArrayList();        
-        ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo = FXCollections.observableArrayList();
+        //ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo = FXCollections.observableArrayList();
         
         //obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(bAtivoUsuarioPerfilUo, nIdUsuarioPerfilUo, strUoNome, strUODescricao, strPerfil));
         obslistaTbGestaoUsuarioPerfilUo.add(
-                new TbGestaoUsuarios(/*bAtivoUsuarioPerfilUo*/ true, /*nIdUsuarioPerfilUo*/ 0, 
-                        /*strUoNome*/ choiceUo.displayString, 
-                        /*strUODescricao*/choiceUo.displayString, 
-                        /*strPerfil*/ choicePerfilUsuario.displayString));
-        listItensUOPerfil.setItems(obslistaTbGestaoUsuarioPerfilUo);
+                new TbGestaoUsuarios(choiceUo.id, choiceUo.displayString, choicePerfilUsuario.id, choicePerfilUsuario.displayString));
+        //listItensUOPerfil.setItems(obslistaTbGestaoUsuarioPerfilUo);
+        
+        tbClIdUo.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Integer>("intp_idUnidadeOrganizacional"));
+        tbClNomeUO.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoNome"));
+        tbClIdTipoPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Integer>("intp_idUsuarioPerfil"));
+        tbClNomePerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_PerfilNome"));            
+        
+        tbviewListaUoPerfil.setItems(obslistaTbGestaoUsuarioPerfilUo);
                
                 
     }
     @FXML 
     private void btnClickDeleteUO(ActionEvent event) throws IOException{
+        
+        TbGestaoUsuarios data = tbviewListaUoPerfil.getSelectionModel().getSelectedItem();  
+        obslistaTbGestaoUsuarioPerfilUo.remove(data);
           
                 
     }
