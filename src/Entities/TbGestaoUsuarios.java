@@ -36,9 +36,10 @@ public class TbGestaoUsuarios {
     private BooleanProperty boolp_UsuarioPerfilUoAtivo;
 
     //Constructor TbUsuario para adicionar relação UO<==>Perfil
-    public TbGestaoUsuarios(Integer nIdUO, String strNomeUO, Integer nIdTipoPerfil, String strNomeTipoPerfil) {
+    public TbGestaoUsuarios(Integer nIdUO, String strNomeUO, String strDescricaoUO, Integer nIdTipoPerfil, String strNomeTipoPerfil) {
         intp_idUnidadeOrganizacional = new SimpleIntegerProperty(nIdUO);
         strp_UoNome = new SimpleStringProperty(strNomeUO);
+        strp_UoDescricao = new SimpleStringProperty(strDescricaoUO);
         intp_idUsuarioPerfil = new SimpleIntegerProperty(nIdTipoPerfil);
         strp_PerfilNome = new SimpleStringProperty(strNomeTipoPerfil);
     }

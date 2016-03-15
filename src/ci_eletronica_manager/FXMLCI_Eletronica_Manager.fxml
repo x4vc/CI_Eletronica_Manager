@@ -26,7 +26,7 @@
                               <TableColumn fx:id="tbColAtivo" prefWidth="55.0" text="Ativo" />
                           </columns>
                         </TableView>
-                        <TextField fx:id="txtNomeUsuario" layoutX="5.0" layoutY="14.0" prefHeight="25.0" prefWidth="335.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="15.0" />
+                        <TextField fx:id="txtNomeUsuario" layoutX="102.0" layoutY="14.0" prefHeight="25.0" prefWidth="238.0" AnchorPane.leftAnchor="102.0" AnchorPane.topAnchor="15.0" />
                         <TableView fx:id="tbViewUosPerfil" layoutX="354.0" layoutY="50.0" prefHeight="401.0" prefWidth="391.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="50.0">
                           <columns>
                             <TableColumn fx:id="tbColIdUoPerfil" prefWidth="34.0" text="Id" />
@@ -53,6 +53,8 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <Label layoutX="5.0" layoutY="19.0" text="Nome do usuário:" />
+                        <Label layoutX="400.0" layoutY="19.0" text="UO  relacionado com o usuário:" />
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -75,7 +77,7 @@
                               <TableColumn fx:id="tbColDescricaoUOGestora" prefWidth="235.0" text="UO Descrição" />
                           </columns>
                         </TableView>
-                        <TextField fx:id="txtNomeUO" layoutX="25.0" layoutY="25.0" prefWidth="335.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="15.0" />
+                        <TextField fx:id="txtNomeUO" layoutX="78.0" layoutY="25.0" prefHeight="25.0" prefWidth="262.0" AnchorPane.leftAnchor="78.0" AnchorPane.topAnchor="15.0" />
                         <Button fx:id="btnAdicionarUO" layoutX="25.0" layoutY="441.0" mnemonicParsing="false" onAction="#btnAddNovaUO" prefHeight="25.0" prefWidth="135.0" text="Adicionar UO" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
                            <graphic>
                               <ImageView>
@@ -94,6 +96,8 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <Label layoutX="5.0" layoutY="19.0" text="Nome da UO:" />
+                        <Label layoutX="400.0" layoutY="19.0" text="Unidade Gestora:" />
                      </children></AnchorPane>
             </content>
           </Tab>

@@ -19,7 +19,7 @@
       <Label layoutX="23.0" layoutY="136.0" text="Senha:" AnchorPane.leftAnchor="10.0" />
       <Label layoutX="23.0" layoutY="179.0" text="Status:" AnchorPane.leftAnchor="10.0" />
       <Button fx:id="btnResetearSenha" layoutX="337.0" layoutY="132.0" mnemonicParsing="false" onAction="#btnResetearSenhaUsuario" text="Resetear senha" AnchorPane.leftAnchor="370.0" />
-      <Button fx:id="btnSalvar" layoutX="55.0" layoutY="554.0" mnemonicParsing="false" text="Salvar" />
+      <Button fx:id="btnSalvar" layoutX="55.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnClickSalvar" text="Salvar" />
       <Button fx:id="btnCancelar" layoutX="142.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnClickCancelar" text="Cancelar" />
       <TableView fx:id="tbViewUosPerfil" layoutX="30.0" layoutY="251.0" prefHeight="286.0" prefWidth="428.0" AnchorPane.leftAnchor="10.0">
         <columns>
@@ -32,6 +32,6 @@
       </TableView>
       <Button fx:id="btnEditarUo" layoutX="457.0" layoutY="251.0" mnemonicParsing="false" prefWidth="90.0" text="Editar UO" AnchorPane.leftAnchor="460.0" />
       <Button fx:id="btnAddUo" layoutX="460.0" layoutY="288.0" mnemonicParsing="false" onAction="#btnAdicionarUOPerfil" prefWidth="90.0" text="Adicionar UO" AnchorPane.leftAnchor="460.0" />
-      <Button fx:id="btnDeleteUo" layoutX="460.0" layoutY="325.0" mnemonicParsing="false" prefWidth="90.0" text="Excluir UO" AnchorPane.leftAnchor="460.0" />
+      <Button fx:id="btnDeleteUo" layoutX="460.0" layoutY="325.0" mnemonicParsing="false" onAction="#btnClickExcluirUO" prefWidth="90.0" text="Excluir UO" AnchorPane.leftAnchor="460.0" />
    </children>
 </AnchorPane>

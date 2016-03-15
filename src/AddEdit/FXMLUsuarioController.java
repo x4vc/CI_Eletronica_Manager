@@ -100,6 +100,10 @@ public class FXMLUsuarioController implements Initializable {
     //-----------------------------
     TbUsuarioPerfilUo datagUsuario;
     
+    private ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo = FXCollections.observableArrayList();
+    
+    private int nContador = 0;
+    
 
     /**
      * Initializes the controller class.
@@ -286,7 +290,7 @@ public class FXMLUsuarioController implements Initializable {
         
         //Preenchemos com os valores de acordo ao Id do usuário
         List<TbUsuarioPerfilUo> listaUsuarioPerfilUo = new ArrayList<TbUsuarioPerfilUo>();
-        ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo = FXCollections.observableArrayList();
+        //ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo = FXCollections.observableArrayList();
         
         int nIdUsuarioPerfilUo = 0;
         String strUoNome = "";
@@ -385,13 +389,77 @@ public class FXMLUsuarioController implements Initializable {
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL);     //Window Parent fica inativo
                 stage.showAndWait();
+                
+                ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo = FXCollections.observableArrayList();
+                obslistaTbGestaoUsuarioPerfilUo = usuarioController.getDataTableView();
+                System.out.println();
+                if (null != obslistaTbGestaoUsuarioPerfilUo){
+                    System.out.println();
+                    PreencherTableView(obslistaTbGestaoUsuarioPerfilUo);
+                }
 //                                
             }catch (IOException ex) {
                 Logger.getLogger(FXMLCI_Eletronica_ManagerController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }   
+    }
+    
+    private void PreencherTableView(ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo){
+        TbGestaoUsuarios  entitiyTbGestaoUsuarios;
+        int nSize = 0;
+        nSize = obslistaTbGestaoUsuarioPerfilUo.size();
+        
+        for (int i = 0; i < nSize; i++){
+            this.nContador++;
+            entitiyTbGestaoUsuarios = obslistaTbGestaoUsuarioPerfilUo.get(i);
+            this.obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(true, this.nContador, entitiyTbGestaoUsuarios.getStrp_UoNome(), entitiyTbGestaoUsuarios.getStrp_UoDescricao(), entitiyTbGestaoUsuarios.getStrp_PerfilNome()));
+            
+        }
+        tbViewUosPerfil.setItems(this.obslistaTbGestaoUsuarioPerfilUo);   
         
         
-                
+    }
+    
+     @FXML 
+    private void btnClickExcluirUO(ActionEvent event) throws IOException{
+        if (null == tbViewUosPerfil.getSelectionModel().getSelectedItem()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Registro não foi selecionado.");
+            alert.setContentText("Favor selecionar um registro da tabela");
+            alert.showAndWait();
+        }else{
+            TbGestaoUsuarios data = tbViewUosPerfil.getSelectionModel().getSelectedItem();  
+            obslistaTbGestaoUsuarioPerfilUo.remove(data);
+        }
+    }
+    
+    @FXML 
+    private void btnClickSalvar(ActionEvent event) throws IOException{
+        this.nContador = 0;        
+        Alert alert;
+        
+        //Valores nTipoCrud:
+        //1 ==> Salvar novo registro
+        //2 ==> Editar registro*/       
+        
+        switch (nTipoCrud){
+            case 1:
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informação");
+                alert.setHeaderText("Registro foi salvo.");
+                alert.setContentText("Salvar novo registro");
+                alert.showAndWait();        
+                break;
+            case 2:
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informação");
+                alert.setHeaderText("Registro foi editado e salvo.");
+                alert.setContentText("Salvar edição do registro");
+                alert.showAndWait();        
+                break;
+            default:
+                break;
+        }
     }
             
     

@@ -71,6 +71,7 @@ public class FXMLAddEditUOPerfilUsuarioController implements Initializable {
     TableColumn tbClNomePerfil;
     
     private ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo = FXCollections.observableArrayList();
+    ObservableList<TbGestaoUsuarios> dataTableView = FXCollections.observableArrayList();;
 
     /**
      * Initializes the controller class.
@@ -102,48 +103,7 @@ public class FXMLAddEditUOPerfilUsuarioController implements Initializable {
             choicesUOs.add(new Choice(l.getIdUnidadeOrganizacional(), l.getUnorNome(), l.getUnorDescricao()));         
         }
         cbUo.setItems(choicesUOs);
-        
-        //Para utilizar auto-completar devemos instanciar a clase AutoCompleteComboBoxListener
-        //new AutoCompleteComboBoxListener(cbUo);
        
-        /*
-        // Create a FilteredList wrapping the ObservableList.
-        FilteredList<Choice> filteredItems = new FilteredList<Choice>(choicesUOs, p -> true);
-        
-        // Add a listener to the textProperty of the combobox editor. The
-        // listener will simply filter the list every time the input is changed
-        // as long as the user hasn't selected an item in the list.
-        cbUo.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
-            final TextField editor = cbUo.getEditor();
-            Choice selected = cbUo.getSelectionModel().getSelectedItem();
-
-            // This needs run on the GUI thread to avoid the error described
-            // here: https://bugs.openjdk.java.net/browse/JDK-8081700.
-            Platform.runLater(() -> {
-                // If the no item in the list is selected or the selected item
-                // isn't equal to the current input, we refilter the list.
-                if (selected == null || !selected.equals(editor.getText())) {
-                    filteredItems.setPredicate(item -> {
-                        // We return true for any items that starts with the
-                        // same letters as the input. We use toUpperCase to
-                        // avoid case sensitivity.
-                        if (item.displayString.toUpperCase().startsWith(newValue.toUpperCase())) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    });
-                }
-            });
-        });
-        */
-        
-//        chbUo.setItems(choicesUOs);        
-//        chbUo.getSelectionModel().select(0);
-        
-        //cbUo.setItems(filteredItems);
-        
-        //cbUo.setItems(choicesUOs);
         cbUo.getSelectionModel().select(0);
 
         //--------------FIM preencher UOs no combox ---------------
@@ -214,9 +174,13 @@ public class FXMLAddEditUOPerfilUsuarioController implements Initializable {
         //ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo = FXCollections.observableArrayList();
         
         //obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(bAtivoUsuarioPerfilUo, nIdUsuarioPerfilUo, strUoNome, strUODescricao, strPerfil));
+        try {
         obslistaTbGestaoUsuarioPerfilUo.add(
-                new TbGestaoUsuarios(choiceUo.id, choiceUo.displayString, choicePerfilUsuario.id, choicePerfilUsuario.displayString));
+                new TbGestaoUsuarios(choiceUo.id, choiceUo.displayString, choiceUo.displayString2, choicePerfilUsuario.id, choicePerfilUsuario.displayString));
         //listItensUOPerfil.setItems(obslistaTbGestaoUsuarioPerfilUo);
+        }catch (Exception ex){
+            System.out.println(ex);            
+        }
         
         tbClIdUo.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Integer>("intp_idUnidadeOrganizacional"));
         tbClNomeUO.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoNome"));
@@ -238,12 +202,41 @@ public class FXMLAddEditUOPerfilUsuarioController implements Initializable {
     
     @FXML 
     private void btnClickCancelar(ActionEvent event) throws IOException{
+        
+        obslistaTbGestaoUsuarioPerfilUo = null;
+        
+        setDataTableView(obslistaTbGestaoUsuarioPerfilUo); 
         // get a handle to the stage
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         // do what you have to do
         stage.close();        
                 
     }
+    
+    @FXML 
+    private void btnClickOk(ActionEvent event) throws IOException{
+        
+        setDataTableView(obslistaTbGestaoUsuarioPerfilUo); 
+        // get a handle to the stage
+        Stage stage = (Stage) btnOK.getScene().getWindow();
+        // do what you have to do
+        stage.close();        
+          
+                
+    }
+
+    public ObservableList<TbGestaoUsuarios> getDataTableView() {
+        return dataTableView;
+    }
+
+    public void setDataTableView(ObservableList<TbGestaoUsuarios> dataTableView) {
+        this.dataTableView = dataTableView;
+    }
+    
+    
+    
+    
+    
     
     
     
