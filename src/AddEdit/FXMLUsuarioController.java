@@ -6,6 +6,7 @@
 package AddEdit;
 
 import Entities.TbGestaoUsuarios;
+import Entities.TbUsuario;
 import Entities.TbUsuarioPerfilUo;
 import Queries.GestaoQueries;
 import ci_eletronica_manager.FXMLCI_Eletronica_ManagerController;
@@ -435,31 +436,95 @@ public class FXMLUsuarioController implements Initializable {
     
     @FXML 
     private void btnClickSalvar(ActionEvent event) throws IOException{
+        boolean bCampos = false;
+        bCampos = Verificar_campos();
+        
         this.nContador = 0;        
         Alert alert;
         
-        //Valores nTipoCrud:
-        //1 ==> Salvar novo registro
-        //2 ==> Editar registro*/       
-        
-        switch (nTipoCrud){
-            case 1:
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informação");
-                alert.setHeaderText("Registro foi salvo.");
-                alert.setContentText("Salvar novo registro");
-                alert.showAndWait();        
-                break;
-            case 2:
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informação");
-                alert.setHeaderText("Registro foi editado e salvo.");
-                alert.setContentText("Salvar edição do registro");
-                alert.showAndWait();        
-                break;
-            default:
-                break;
+        if (bCampos){
+            //Valores nTipoCrud:
+            //1 ==> Salvar novo registro
+            //2 ==> Editar registro*/       
+
+            switch (nTipoCrud){
+                case 1:
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Informação");
+                    alert.setHeaderText("Registro foi salvo.");
+                    alert.setContentText("Salvar novo registro");
+                    alert.showAndWait();        
+                    break;
+                case 2:
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Informação");
+                    alert.setHeaderText("Registro foi editado e salvo.");
+                    alert.setContentText("Salvar edição do registro");
+                    alert.showAndWait();        
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Não foi possível salvar o registro.");
+            alert.setContentText("Verificar que todos os campos estejam preenchidos");
+            alert.showAndWait(); 
+            
         }
+        
+    }
+    private Boolean Verificar_campos(){
+        Alert alert;
+        boolean bEstado= true;
+        
+        String strUserName = txtNomeCompleto.getText();
+        strUserName = strUserName.trim();
+        
+        String strLoginName = txtLogin.getText();
+        strLoginName = strLoginName.trim();
+        
+        String strPassword = txtSenha.getText();
+        strPassword = strPassword.trim();
+        //Verificamos se existem UOs relacionadas com o usuário
+        int nSizeListaUO = 0;
+        int nSizeListaLogin = 0;
+        nSizeListaUO = this.obslistaTbGestaoUsuarioPerfilUo.size();
+        //----------------------------------------------------------
+        
+        //Verificamos se já existe um login igual no banco de dados.
+        GestaoQueries consulta;
+        consulta  = new GestaoQueries();  
+        List<TbUsuario> listaUserLogin = new ArrayList<TbUsuario>();
+        
+        listaUserLogin = consulta.listaUserLogin(txtLogin.getText());
+        nSizeListaLogin = listaUserLogin.size();
+        //-----------------------------------------------------------
+        
+        if (strUserName.isEmpty()){
+            bEstado = false;
+            return bEstado;            
+        }else if (strLoginName.isEmpty()){
+            bEstado = false;
+            return bEstado;                        
+        }else if (strPassword.isEmpty()){
+            bEstado = false;
+            return bEstado;                        
+        }else if ((nSizeListaUO <=0)){
+            bEstado = false;
+            return bEstado;            
+        } else if ((nSizeListaLogin > 0)){
+            bEstado = false;
+            return bEstado;
+        }
+//        alert = new Alert(Alert.AlertType.WARNING);
+//        alert.setTitle("Alerta");
+//        alert.setHeaderText("Dados inconsistentes");
+//        alert.setContentText("UO não selecionado ou Login já existe no banco de dados  ");
+//        alert.showAndWait();        
+            
+        return bEstado;
     }
             
     

@@ -47,6 +47,14 @@ public class GestaoQueries {
                 .getResultList();
         
         }
+    public List<TbUsuario> listaUserLogin(String strUserLogin) {
+        
+         //return em.createNamedQuery("TbUsuario.findAll",TbUsuario.class).getResultList();
+        return em.createNamedQuery("TbUsuario.findByUsuLogin",TbUsuario.class) 
+                .setParameter("usuLogin", strUserLogin)
+                .getResultList();
+        
+        }
     
      public List<TbUsuarioPerfil> listaPerfis() {
         
