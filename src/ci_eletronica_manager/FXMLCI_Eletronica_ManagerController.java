@@ -113,6 +113,8 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
     private TableColumn tbColDescricaoUOGestora;    
     //--------------FIM Variaveis Aba UOs
     
+    //private ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarios = FXCollections.observableArrayList();
+    
     @FXML
     private void handleBtnSair(ActionEvent event) {
         exit(0);
@@ -307,11 +309,34 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL);     //Window Parent fica inativo
                 stage.showAndWait();
+                
+                //clear_telas();
+                IniciarTabGestaoUsuarios();
 //                                
             }catch (IOException ex) {
                 Logger.getLogger(FXMLCI_Eletronica_ManagerController.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
+    
+    private void clear_telas(){
+        int nTblViewUsuariosSize = 0;
+        int nTblViewUoPerfilSize = 0;
+        //Devemos fazer refresh da tableView e campo texto
+        txtNomeUsuario.setText("");
+        nTblViewUsuariosSize = tbViewUsuarios.getItems().size();        
+        nTblViewUoPerfilSize = tbViewUosPerfil.getItems().size();
+        try {
+            if (nTblViewUsuariosSize > 0){
+                tbViewUsuarios.getItems().clear();
+            }
+            if (nTblViewUoPerfilSize > 0){
+                tbViewUosPerfil.getItems().clear();
+            }
+        }catch(Exception ex){
+            System.out.println("clear_telas() Exception: " + ex);            
+        }
+    }
+    
     @FXML
     public void btnEditarUO(ActionEvent event) throws IOException{
         if (null == tbViewUOs.getSelectionModel().getSelectedItem()){

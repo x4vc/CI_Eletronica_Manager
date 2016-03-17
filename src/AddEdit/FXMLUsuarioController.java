@@ -449,8 +449,22 @@ public class FXMLUsuarioController implements Initializable {
     @FXML 
     private void btnClickSalvar(ActionEvent event) throws IOException{
         boolean bCampos = false;
-        bCampos = Verificar_campos();
         
+        //Valores nTipoCrud:
+        //1 ==> Salvar novo registro
+        //2 ==> Editar registro*/       
+        switch (nTipoCrud){
+            case 1: 
+                    bCampos = Verificar_campos(nTipoCrud);
+                break;
+                
+            case 2:                
+                    bCampos = Verificar_campos(nTipoCrud);                
+                break;
+                
+            default:
+                break;
+        }
         this.nContador = 0;        
         Alert alert;
         
@@ -460,14 +474,18 @@ public class FXMLUsuarioController implements Initializable {
             //2 ==> Editar registro*/       
 
             switch (nTipoCrud){
-                case 1:                    
+                case 1:         
+                    
                     SalvarNovoUsuario();
+                    
                     // get a handle to the stage
                     Stage stage = (Stage) btnSalvar.getScene().getWindow();
                     // do what you have to do
                     stage.close();
                     break;
                 case 2:
+                    
+                    SalvarEdicaoUsuario(Integer.parseInt(txtIdUsuario.getText()));
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Informação");
                     alert.setHeaderText("Registro foi editado e salvo.");
@@ -478,14 +496,29 @@ public class FXMLUsuarioController implements Initializable {
                     break;
             }
         } else {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Não foi possível salvar o registro.");
-            alert.setContentText("Verificar que todos os campos estejam preenchidos");
-            alert.showAndWait(); 
+//            alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Erro");
+//            alert.setHeaderText("Não foi possível salvar o registro.");
+//            alert.setContentText("Verificar que todos os campos estejam preenchidos");
+//            alert.showAndWait(); 
             
         }
         
+    }
+    private void SalvarEdicaoUsuario(int nIdUsuario){
+        EntityManager em;
+        EntityManagerFactory emf;
+        
+        emf = Persistence.createEntityManagerFactory("CI_Eletronica_ManagerPU");
+        em = emf.createEntityManager();        
+        em.getTransaction().begin();
+        //---------------------------------------
+        GestaoQueries consulta;
+        consulta  = new GestaoQueries();  
+        
+        TbUsuario entityTbUsuario = consulta.getDadosUsuario(nIdUsuario);
+        
+        System.out.println();
     }
     private void SalvarNovoUsuario(){
         EntityManager em;
@@ -557,11 +590,11 @@ public class FXMLUsuarioController implements Initializable {
         alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Informação");
         alert.setHeaderText("Registro foi salvo.");
-        alert.setContentText("Salvar novo registro");
+        alert.setContentText("Novo usuário foi salvo com sucesso");
         alert.showAndWait();
     }
     
-    private Boolean Verificar_campos(){
+    private Boolean Verificar_campos(int nTipoCrud){
         Alert alert;
         boolean bEstado= true;
         
@@ -579,28 +612,75 @@ public class FXMLUsuarioController implements Initializable {
         nSizeListaUO = this.obslistaTbGestaoUsuarioPerfilUo.size();
         //----------------------------------------------------------
         
-        //Verificamos se já existe um login igual no banco de dados.
         GestaoQueries consulta;
-        consulta  = new GestaoQueries();  
         List<TbUsuario> listaUserLogin = new ArrayList<TbUsuario>();
         
-        listaUserLogin = consulta.listaUserLogin(txtLogin.getText());
-        nSizeListaLogin = listaUserLogin.size();
-        //-----------------------------------------------------------
+        switch (nTipoCrud){
+            case 1:
+                //Verificamos se já existe um login igual no banco de dados.
+                
+                consulta  = new GestaoQueries();                 
+
+                listaUserLogin = consulta.listaUserLogin(txtLogin.getText());
+                nSizeListaLogin = listaUserLogin.size();
+                //-----------------------------------------------------------
+                break;
+            case 2:
+                //Verificamos se já existe um login igual no banco de dados.                
+                consulta  = new GestaoQueries();                  
+        
+                listaUserLogin = consulta.listaUserLoginUpdate(txtLogin.getText(), Integer.parseInt(txtIdUsuario.getText().trim()));
+                nSizeListaLogin = listaUserLogin.size();
+                //-----------------------------------------------------------
+                break;
+            default:
+                break;
+        }
+        
         
         if (strUserName.isEmpty()){
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta");
+            alert.setHeaderText("Dados inconsistentes");
+            alert.setContentText("Usuário deve preencher nome do usuário.");
+            alert.showAndWait(); 
+            
             bEstado = false;
             return bEstado;            
         }else if (strLoginName.isEmpty()){
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta");
+            alert.setHeaderText("Dados inconsistentes");
+            alert.setContentText("Usuário deve preencher login do usuário.");
+            alert.showAndWait();
             bEstado = false;
+            
             return bEstado;                        
         }else if (strPassword.isEmpty()){
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta");
+            alert.setHeaderText("Dados inconsistentes");
+            alert.setContentText("Usuário deve preencher a senha do usuário.");
+            alert.showAndWait();
+            
             bEstado = false;
             return bEstado;                        
         }else if ((nSizeListaUO <=0)){
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta");
+            alert.setHeaderText("Dados inconsistentes");
+            alert.setContentText("Usuário deve estar relacionado com ao menos uma UO.");
+            alert.showAndWait();   
+            
             bEstado = false;
             return bEstado;            
         } else if ((nSizeListaLogin > 0)){
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta");
+            alert.setHeaderText("Dados inconsistentes");
+            alert.setContentText("Login já existe no banco de dados.");
+            alert.showAndWait();   
+            
             bEstado = false;
             return bEstado;
         }

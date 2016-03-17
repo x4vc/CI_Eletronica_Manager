@@ -31,6 +31,13 @@ public class GestaoQueries {
     }
     
     
+    public TbUsuario getDadosUsuario(int nIdUsuario) {
+        
+        return em.createNamedQuery("TbUsuario.findByIdUsuario",TbUsuario.class)
+                .setParameter("idUsuario", nIdUsuario )
+                .getSingleResult();
+        
+    }
     
     public List<TbUsuario> listaUsuarios() {
         
@@ -55,6 +62,16 @@ public class GestaoQueries {
                 .getResultList();
         
         }
+    
+    public List<TbUsuario> listaUserLoginUpdate(String strUserLogin, int nIdUsuario) {
+        
+         //return em.createNamedQuery("TbUsuario.findAll",TbUsuario.class).getResultList();
+        return em.createNamedQuery("TbUsuario.findByUsuLoginUpdate",TbUsuario.class) 
+                .setParameter("usuLogin", strUserLogin)
+                .setParameter("idUsuario", nIdUsuario)
+                .getResultList();
+        
+    }
     
      public List<TbUsuarioPerfil> listaPerfis() {
         

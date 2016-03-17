@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TbUsuario.findByIdUsuario", query = "SELECT t FROM TbUsuario t WHERE t.idUsuario = :idUsuario"),
     @NamedQuery(name = "TbUsuario.findByUsuNomeCompleto", query = "SELECT t FROM TbUsuario t WHERE t.usuNomeCompleto = :usuNomeCompleto"),
     @NamedQuery(name = "TbUsuario.findByUsuLogin", query = "SELECT t FROM TbUsuario t WHERE t.usuLogin = :usuLogin"),
+    @NamedQuery(name = "TbUsuario.findByUsuLoginUpdate", query = "SELECT t FROM TbUsuario t WHERE t.usuLogin = :usuLogin AND t.idUsuario NOT IN(:idUsuario)"),
     @NamedQuery(name = "TbUsuario.findByUsuSenha", query = "SELECT t FROM TbUsuario t WHERE t.usuSenha = :usuSenha"),
     @NamedQuery(name = "TbUsuario.findByUsuAtivo", query = "SELECT t FROM TbUsuario t WHERE t.usuAtivo = :usuAtivo"),
     @NamedQuery(name = "TbUsuario.findByUsuAssinatura", query = "SELECT t FROM TbUsuario t WHERE t.usuAssinatura = :usuAssinatura")})
