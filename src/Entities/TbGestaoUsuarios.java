@@ -55,12 +55,14 @@ public class TbGestaoUsuarios {
     }
     
     //Constructor TbUsuarioPerfilUo    
-    public TbGestaoUsuarios(boolean bUsuPerfilUoAtivo, Integer nIdUsuarioPerfilUo, String strUonome, String strUoDescricao, String strPerfilNome){
+    public TbGestaoUsuarios(boolean bUsuPerfilUoAtivo, Integer nIdUsuarioPerfilUo, String strUonome, String strUoDescricao, String strPerfilNome, Integer nIdTipoPerfil, Integer nIdUO ){
         boolp_UsuarioPerfilUoAtivo = new SimpleBooleanProperty(bUsuPerfilUoAtivo);
         intp_idUsuarioPerfilUo = new SimpleIntegerProperty(nIdUsuarioPerfilUo);
         strp_UoNome = new SimpleStringProperty(strUonome);
         strp_UoDescricao = new SimpleStringProperty(strUoDescricao);
-        strp_PerfilNome = new SimpleStringProperty(strPerfilNome);   
+        strp_PerfilNome = new SimpleStringProperty(strPerfilNome); 
+        intp_idUsuarioPerfil = new SimpleIntegerProperty(nIdTipoPerfil);
+        intp_idUnidadeOrganizacional = new SimpleIntegerProperty(nIdUO);
         
     }
 

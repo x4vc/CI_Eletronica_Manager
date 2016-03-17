@@ -10,6 +10,7 @@ import Entities.TbGestaoUsuarios;
 import Entities.TbUnidadeOrganizacional;
 import Entities.TbUnidadeOrganizacionalGestor;
 import Entities.TbUsuario;
+import Entities.TbUsuarioPerfil;
 import Entities.TbUsuarioPerfilUo;
 import Queries.GestaoQueries;
 import java.io.IOException;
@@ -225,6 +226,10 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
         ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo = FXCollections.observableArrayList();
         
         int nIdUsuarioPerfilUo = 0;
+        
+        TbUsuarioPerfil nIdUsuarioPerfil;
+        TbUnidadeOrganizacional nIdUO;
+        
         String strUoNome = "";
         String strUODescricao = "";
         String strPerfil = "";
@@ -242,8 +247,10 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
             strUODescricao = l.getIdUnidadeOrganizacional().getUnorDescricao();
             strPerfil = l.getIdUsuarioPerfil().getPeusDescricao();
             bAtivoUsuarioPerfilUo = l.getUspuAtivo();
+            nIdUsuarioPerfil = l.getIdUsuarioPerfil();
+            nIdUO = l.getIdUnidadeOrganizacional();
             
-            obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(bAtivoUsuarioPerfilUo, nIdUsuarioPerfilUo, strUoNome, strUODescricao, strPerfil));            
+            obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(bAtivoUsuarioPerfilUo, nIdUsuarioPerfilUo, strUoNome, strUODescricao, strPerfil, nIdUsuarioPerfil.getIdUsuarioPerfil(), nIdUO.getIdUnidadeOrganizacional()));            
         }
         tbColIdUoPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Integer>("intp_idUsuarioPerfilUo"));
         tbColUoNome.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoNome"));

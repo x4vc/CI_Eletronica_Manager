@@ -6,9 +6,12 @@
 package AddEdit;
 
 import Entities.TbGestaoUsuarios;
+import Entities.TbUnidadeOrganizacional;
 import Entities.TbUsuario;
+import Entities.TbUsuarioPerfil;
 import Entities.TbUsuarioPerfilUo;
 import Queries.GestaoQueries;
+import Utilities.Seguranca;
 import ci_eletronica_manager.FXMLCI_Eletronica_ManagerController;
 import java.io.IOException;
 import java.net.URL;
@@ -51,6 +54,9 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  * FXML Controller class
@@ -294,6 +300,10 @@ public class FXMLUsuarioController implements Initializable {
         //ObservableList<TbGestaoUsuarios> obslistaTbGestaoUsuarioPerfilUo = FXCollections.observableArrayList();
         
         int nIdUsuarioPerfilUo = 0;
+        
+        TbUsuarioPerfil nIdUsuarioPerfil;
+        TbUnidadeOrganizacional nIdUO;
+        
         String strUoNome = "";
         String strUODescricao = "";
         String strPerfil = "";
@@ -314,8 +324,10 @@ public class FXMLUsuarioController implements Initializable {
                 strUODescricao = l.getIdUnidadeOrganizacional().getUnorDescricao();
                 strPerfil = l.getIdUsuarioPerfil().getPeusDescricao();
                 bAtivoUsuarioPerfilUo = l.getUspuAtivo();
+                nIdUsuarioPerfil = l.getIdUsuarioPerfil();
+                nIdUO = l.getIdUnidadeOrganizacional();
 
-                obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(bAtivoUsuarioPerfilUo, nIdUsuarioPerfilUo, strUoNome, strUODescricao, strPerfil));            
+                obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(bAtivoUsuarioPerfilUo, nIdUsuarioPerfilUo, strUoNome, strUODescricao, strPerfil,nIdUsuarioPerfil.getIdUsuarioPerfil(), nIdUO.getIdUnidadeOrganizacional()));            
             }
 
                 //tbColAtivoUsuarioPerfilUo.setCellFactory(new PropertyValueFactory<TbGestaoUsuarios,Boolean>("boolp_UsuarioPerfilUoAtivo"));
@@ -412,7 +424,7 @@ public class FXMLUsuarioController implements Initializable {
         for (int i = 0; i < nSize; i++){
             this.nContador++;
             entitiyTbGestaoUsuarios = obslistaTbGestaoUsuarioPerfilUo.get(i);
-            this.obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(true, this.nContador, entitiyTbGestaoUsuarios.getStrp_UoNome(), entitiyTbGestaoUsuarios.getStrp_UoDescricao(), entitiyTbGestaoUsuarios.getStrp_PerfilNome()));
+            this.obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(true, /*this.nContador*/ entitiyTbGestaoUsuarios.getIntp_idUnidadeOrganizacional(), entitiyTbGestaoUsuarios.getStrp_UoNome(), entitiyTbGestaoUsuarios.getStrp_UoDescricao(), entitiyTbGestaoUsuarios.getStrp_PerfilNome(), entitiyTbGestaoUsuarios.getIntp_idUsuarioPerfil(), entitiyTbGestaoUsuarios.getIntp_idUnidadeOrganizacional()));
             
         }
         tbViewUosPerfil.setItems(this.obslistaTbGestaoUsuarioPerfilUo);   
@@ -448,12 +460,12 @@ public class FXMLUsuarioController implements Initializable {
             //2 ==> Editar registro*/       
 
             switch (nTipoCrud){
-                case 1:
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Informação");
-                    alert.setHeaderText("Registro foi salvo.");
-                    alert.setContentText("Salvar novo registro");
-                    alert.showAndWait();        
+                case 1:                    
+                    SalvarNovoUsuario();
+                    // get a handle to the stage
+                    Stage stage = (Stage) btnSalvar.getScene().getWindow();
+                    // do what you have to do
+                    stage.close();
                     break;
                 case 2:
                     alert = new Alert(Alert.AlertType.INFORMATION);
@@ -475,6 +487,80 @@ public class FXMLUsuarioController implements Initializable {
         }
         
     }
+    private void SalvarNovoUsuario(){
+        EntityManager em;
+        EntityManagerFactory emf;
+        
+        emf = Persistence.createEntityManagerFactory("CI_Eletronica_ManagerPU");
+        em = emf.createEntityManager();        
+        em.getTransaction().begin();
+        
+        TbUsuario newUsuario = new TbUsuario();
+        //---------------------------------------
+        Alert alert;
+        
+        String strUserName = txtNomeCompleto.getText();
+        String strLoginName = txtLogin.getText();
+        String strPassword = txtSenha.getText();
+        
+        boolean bStatusUsuario = true;
+        String strStatusUsuario = cmbAtivoUsuario.getValue().toString();
+        if (0==strStatusUsuario.compareTo("Ativado")){
+            bStatusUsuario = true;
+        }else{
+            bStatusUsuario = false;
+        }
+        
+//        System.out.println("Valor comboBox:" + strStatusUsuario);
+//        System.out.println("Valor boolean comboBox:" + bStatusUsuario);
+        try {
+            newUsuario.setUsuNomeCompleto(strUserName);
+            newUsuario.setUsuLogin(strLoginName);
+            newUsuario.setUsuSenha(Seguranca.stringToMD5(strPassword));
+            newUsuario.setUsuAtivo(bStatusUsuario);
+
+            em.persist(newUsuario);
+            em.flush();
+
+
+            long IdUsuario = newUsuario.getIdUsuario();
+            int nIdUsuario = (int)IdUsuario;
+
+            int nSizeListaUO = 0;
+            nSizeListaUO = this.obslistaTbGestaoUsuarioPerfilUo.size();
+            for (int i = 0; i<nSizeListaUO;i++){
+                TbUsuarioPerfilUo newUsuarioPerfilUO = new TbUsuarioPerfilUo();
+                
+                TbGestaoUsuarios entityTbGestaoUsuarios = obslistaTbGestaoUsuarioPerfilUo.get(i);
+                
+                TbUsuarioPerfil nIdUsuarioPerfil = new TbUsuarioPerfil(entityTbGestaoUsuarios.getIntp_idUsuarioPerfil());
+                TbUnidadeOrganizacional nIdUO = new TbUnidadeOrganizacional(entityTbGestaoUsuarios.getIntp_idUnidadeOrganizacional());
+
+                newUsuarioPerfilUO.setIdUsuario(nIdUsuario);
+                newUsuarioPerfilUO.setIdUsuarioPerfil(nIdUsuarioPerfil);
+                newUsuarioPerfilUO.setIdUnidadeOrganizacional(nIdUO);
+                newUsuarioPerfilUO.setUspuAtivo(true);
+
+                em.persist(newUsuarioPerfilUO);
+            }
+            
+        }catch(javax.persistence.PersistenceException e){
+                //e.printStackTrace();
+            System.out.println(e);
+            em.close();
+            emf.close();            
+        }
+        em.getTransaction().commit();            
+        em.close();
+        emf.close();
+        
+        alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Informação");
+        alert.setHeaderText("Registro foi salvo.");
+        alert.setContentText("Salvar novo registro");
+        alert.showAndWait();
+    }
+    
     private Boolean Verificar_campos(){
         Alert alert;
         boolean bEstado= true;
