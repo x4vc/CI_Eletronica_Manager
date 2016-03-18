@@ -57,6 +57,7 @@ import javafx.util.Pair;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 /**
  * FXML Controller class
@@ -197,6 +198,7 @@ public class FXMLUsuarioController implements Initializable {
                     if (bUpdate){
 //                        System.out.println("IdUsuario = " + nIdUserUO);
 //                        System.out.println("Update deve acontecer");
+                        txtSenha.setText(Seguranca.stringToMD5(username.getText()));
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Informação");
                         alert.setHeaderText(null);
@@ -468,6 +470,8 @@ public class FXMLUsuarioController implements Initializable {
         this.nContador = 0;        
         Alert alert;
         
+        Stage stage;
+        
         if (bCampos){
             //Valores nTipoCrud:
             //1 ==> Salvar novo registro
@@ -479,18 +483,18 @@ public class FXMLUsuarioController implements Initializable {
                     SalvarNovoUsuario();
                     
                     // get a handle to the stage
-                    Stage stage = (Stage) btnSalvar.getScene().getWindow();
+                    stage = (Stage) btnSalvar.getScene().getWindow();
                     // do what you have to do
                     stage.close();
                     break;
                 case 2:
                     
                     SalvarEdicaoUsuario(Integer.parseInt(txtIdUsuario.getText()));
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Informação");
-                    alert.setHeaderText("Registro foi editado e salvo.");
-                    alert.setContentText("Salvar edição do registro");
-                    alert.showAndWait();        
+                    
+                    // get a handle to the stage
+                    stage = (Stage) btnSalvar.getScene().getWindow();
+                    // do what you have to do
+                    stage.close();                     
                     break;
                 default:
                     break;
@@ -506,19 +510,109 @@ public class FXMLUsuarioController implements Initializable {
         
     }
     private void SalvarEdicaoUsuario(int nIdUsuario){
+        
+        Alert alert;
+        
         EntityManager em;
         EntityManagerFactory emf;
         
         emf = Persistence.createEntityManagerFactory("CI_Eletronica_ManagerPU");
         em = emf.createEntityManager();        
         em.getTransaction().begin();
+        
         //---------------------------------------
+        // 1 - Deletamos os registros da tabela TB_USUARIO_PERFIL_UO relacionados com o id do usuario
+        
+        //---------------------------------------------------------------
+        try{
+                    
+            //em.getTransaction().begin();
+            
+            Query query = em.createQuery("DELETE FROM TbUsuarioPerfilUo t WHERE t.idUsuario = :idUsuario")
+                    .setParameter("idUsuario", nIdUsuario);
+            int nDeletionCount = query.executeUpdate();   
+            
+            if (nDeletionCount > 0){
+                System.out.println("Registros foram apagados com Sucesso!!!...");
+                em.getTransaction().commit();
+            }
+//            
+//            
+//            em.close();
+//            emf.close();
+            
+        }catch (javax.persistence.PersistenceException e) {
+            e.printStackTrace();
+            em.close();
+            emf.close();
+        }
+        
         GestaoQueries consulta;
         consulta  = new GestaoQueries();  
         
-        TbUsuario entityTbUsuario = consulta.getDadosUsuario(nIdUsuario);
+        String strUserName = txtNomeCompleto.getText();
+        String strLoginName = txtLogin.getText();
+        String strPassword = txtSenha.getText();
         
+        boolean bStatusUsuario = true;
+        String strStatusUsuario = cmbAtivoUsuario.getValue().toString();
+        if (0==strStatusUsuario.compareTo("Ativado")){
+            bStatusUsuario = true;
+        }else{
+            bStatusUsuario = false;
+        }
+        
+        try {
+            //em = emf.createEntityManager();        
+            em.getTransaction().begin();
+            
+            TbUsuario entityTbUsuario = consulta.getDadosUsuario(nIdUsuario);
+            entityTbUsuario.setUsuNomeCompleto(strUserName);
+            entityTbUsuario.setUsuLogin(strLoginName);
+            //entityTbUsuario.setUsuSenha(Seguranca.stringToMD5(strPassword));
+            entityTbUsuario.setUsuSenha(strPassword);
+            entityTbUsuario.setUsuAtivo(bStatusUsuario);
+
+            em.merge(entityTbUsuario);
+            
+            int nSizeListaUO = 0;
+            nSizeListaUO = this.obslistaTbGestaoUsuarioPerfilUo.size();
+            for (int i = 0; i<nSizeListaUO;i++){
+                TbUsuarioPerfilUo newUsuarioPerfilUO = new TbUsuarioPerfilUo();
+                
+                TbGestaoUsuarios entityTbGestaoUsuarios = obslistaTbGestaoUsuarioPerfilUo.get(i);
+                
+                TbUsuarioPerfil nIdUsuarioPerfil = new TbUsuarioPerfil(entityTbGestaoUsuarios.getIntp_idUsuarioPerfil());
+                TbUnidadeOrganizacional nIdUO = new TbUnidadeOrganizacional(entityTbGestaoUsuarios.getIntp_idUnidadeOrganizacional());
+
+                newUsuarioPerfilUO.setIdUsuario(nIdUsuario);
+                newUsuarioPerfilUO.setIdUsuarioPerfil(nIdUsuarioPerfil);
+                newUsuarioPerfilUO.setIdUnidadeOrganizacional(nIdUO);
+                newUsuarioPerfilUO.setUspuAtivo(true);
+
+                em.persist(newUsuarioPerfilUO);
+            }
+
+            
+        }catch(javax.persistence.PersistenceException e){
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Atualizar Usuário ");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();  
+            em.close();
+            emf.close();
+        }
+        em.getTransaction().commit();            
+        em.close();
+        emf.close();
         System.out.println();
+        
+        alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Informação");
+        alert.setHeaderText("Registro foi editado e salvo.");
+        alert.setContentText("Salvar edição do registro");
+        alert.showAndWait();       
     }
     private void SalvarNovoUsuario(){
         EntityManager em;
