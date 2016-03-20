@@ -123,7 +123,8 @@ public class FXMLAddEditUOPerfilUsuarioController implements Initializable {
         listaPerfil = consulta.listaPerfis();
         
         for(TbUsuarioPerfil l : listaPerfil){
-            choicesPerfil.add(new Choice(l.getIdUsuarioPerfil(), l.getPeusNome(), l.getPeusDescricao()));       
+            //choicesPerfil.add(new Choice(l.getIdUsuarioPerfil(), l.getPeusNome(), l.getPeusDescricao()));       
+            choicesPerfil.add(new Choice(l.getIdUsuarioPerfil(), l.getPeusDescricao(),l.getPeusNome()));       
         }
         
         chbPerfilUsuario.setItems(choicesPerfil);        
@@ -176,7 +177,7 @@ public class FXMLAddEditUOPerfilUsuarioController implements Initializable {
         //obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(bAtivoUsuarioPerfilUo, nIdUsuarioPerfilUo, strUoNome, strUODescricao, strPerfil));
         try {
         obslistaTbGestaoUsuarioPerfilUo.add(
-                new TbGestaoUsuarios(choiceUo.id, choiceUo.displayString, choiceUo.displayString2, choicePerfilUsuario.id, choicePerfilUsuario.displayString));
+                new TbGestaoUsuarios(choiceUo.id, choiceUo.displayString, choiceUo.displayString2, choicePerfilUsuario.id, choicePerfilUsuario.displayString /*choicePerfilUsuario.displayString2*/));
         //listItensUOPerfil.setItems(obslistaTbGestaoUsuarioPerfilUo);
         }catch (Exception ex){
             System.out.println(ex);            
