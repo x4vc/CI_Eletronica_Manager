@@ -23,5 +23,6 @@
         </columns>
       </TableView>
       <Label layoutX="31.0" layoutY="23.0" text="Selecionar UO:" />
+      <Label layoutX="300.0" layoutY="23.0" text="Selecionar Perfil:" />
    </children>
 </AnchorPane>

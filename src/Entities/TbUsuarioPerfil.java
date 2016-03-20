@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "TB_USUARIO_PERFIL")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TbUsuarioPerfil.findAll", query = "SELECT t FROM TbUsuarioPerfil t"),
+    @NamedQuery(name = "TbUsuarioPerfil.findAll", query = "SELECT t FROM TbUsuarioPerfil t WHERE t.peusAtivo = true"),
     @NamedQuery(name = "TbUsuarioPerfil.findByIdUsuarioPerfil", query = "SELECT t FROM TbUsuarioPerfil t WHERE t.idUsuarioPerfil = :idUsuarioPerfil"),
     @NamedQuery(name = "TbUsuarioPerfil.findByPeusNome", query = "SELECT t FROM TbUsuarioPerfil t WHERE t.peusNome = :peusNome"),
     @NamedQuery(name = "TbUsuarioPerfil.findByPeusDescricao", query = "SELECT t FROM TbUsuarioPerfil t WHERE t.peusDescricao = :peusDescricao"),

@@ -346,18 +346,27 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
             alert.setContentText("Favor selecionar uma UO da tabela");
             alert.showAndWait();
         }else{
-            ShowEditarUO(this, this.datagUO, "Editar UO");
+            //Valores nTipoCrud:
+            //1 ==> Salvar novo registro
+            //2 ==> Editar registro*/
+            int nTipoCrud = 2; 
+            ShowEditarUO(this, this.datagUO, "Editar UO", nTipoCrud);
         }
         
     }
     @FXML
     public void btnAddNovaUO(ActionEvent event) throws IOException{
+        //Valores nTipoCrud:
+        //1 ==> Salvar novo registro
+        //2 ==> Editar registro*/
+        int nTipoCrud = 1; 
+        
         TbGestaoUO addNovaUO = new TbGestaoUO(0,"", "", true);
-        ShowEditarUO(this, addNovaUO, "Adicionar nova UO");
+        ShowEditarUO(this, addNovaUO, "Adicionar nova UO", nTipoCrud);
         
     }
     
-    public void ShowEditarUO(final FXMLCI_Eletronica_ManagerController mainController , TbGestaoUO dataUo, String strTitulo){
+    public void ShowEditarUO(final FXMLCI_Eletronica_ManagerController mainController , TbGestaoUO dataUo, String strTitulo, int nTipoCrud){
         try{
                 Scene scene;
                 scene = new Scene(new AnchorPane());
@@ -365,7 +374,7 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
                 scene.setRoot((Parent) loader.load());
                 
                 AddEdit.FXMLUOsController usuarioController = loader.<AddEdit.FXMLUOsController>getController(); 
-                usuarioController.setVariaveisAmbienteFXMLUO(mainController, dataUo);
+                usuarioController.setVariaveisAmbienteFXMLUO(mainController, dataUo, nTipoCrud);
                 
                 Stage stage = new Stage();
                 stage.setTitle(strTitulo);

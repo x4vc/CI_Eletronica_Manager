@@ -273,9 +273,9 @@ public class FXMLUsuarioController implements Initializable {
                 txtSenha.setDisable(true);
                 txtSenha.setText(dataUsuario.getStrp_UsuarioSenha());
                 btnResetearSenha.setVisible(true);
-                btnEditarUo.setVisible(true);
-                btnAddUo.setVisible(false);
-                btnDeleteUo.setVisible(false);
+                btnEditarUo.setVisible(false);
+                btnAddUo.setVisible(true);
+                btnDeleteUo.setVisible(true);
                 break;
             default:
                 break;

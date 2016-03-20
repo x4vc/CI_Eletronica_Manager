@@ -6,6 +6,7 @@
 package AddEdit;
 
 import Entities.TbGestaoUO;
+import Entities.TbGestaoUsuarios;
 import Entities.TbUnidadeOrganizacional;
 import Entities.TbUnidadeOrganizacionalGestor;
 import Queries.GestaoQueries;
@@ -25,6 +26,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -51,7 +53,7 @@ public class FXMLUOsController implements Initializable {
     @FXML
     private ComboBox cmbAtivoUo;
     @FXML
-    private TableView tbViewUoGestora;
+    private TableView<TbGestaoUO> tbViewUoGestora;
     @FXML
     private TableColumn tbColIdUOGestora;
     @FXML
@@ -64,6 +66,22 @@ public class FXMLUOsController implements Initializable {
     private Button btnSalvar;
     @FXML
     private Button btnCancelar;
+    @FXML
+    private Button btnAdicionarUOGestora;
+    @FXML
+    private Button btnExcluirUOGestora;    
+    @FXML
+    private Button btnEditarUOGestora;
+    @FXML
+    ComboBox<Choice> cbUo;
+    
+    //Valores nTipoCrud:
+    //1 ==> Salvar novo registro
+    //2 ==> Editar registro*/
+    private int nTipoCrud = 0;     
+    //-----------------------------
+    
+    private ObservableList<TbGestaoUO> obslistaTbGestaoUoGestor = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
@@ -74,7 +92,7 @@ public class FXMLUOsController implements Initializable {
         btnCancelar.setCancelButton(true);
     }
     
-    public void setVariaveisAmbienteFXMLUO(final FXMLCI_Eletronica_ManagerController mainController, TbGestaoUO dataUsuario){
+    public void setVariaveisAmbienteFXMLUO(final FXMLCI_Eletronica_ManagerController mainController, TbGestaoUO dataUsuario, int nTipoCrud){
         txtIdUO.setDisable(true);
         txtIdUO.setText(String.valueOf(dataUsuario.getIntp_idUo()));
         txtUoNome.setText(dataUsuario.getStrp_UoNome());
@@ -85,10 +103,51 @@ public class FXMLUOsController implements Initializable {
         }else{
             cmbAtivoUo.setValue("Desativado");
         }
+        //Valores nTipoCrud:
+        //1 ==> Salvar novo registro
+        //2 ==> Editar registro*/
+        this.nTipoCrud = nTipoCrud; 
+        
+        switch (nTipoCrud){
+            case 1: 
+                
+                btnEditarUOGestora.setVisible(false);
+                
+                break;
+            case 2:
+                
+                btnEditarUOGestora.setVisible(true);
+                
+                break;
+            default:
+                break;
+        }
+        //-------------------------------------------------------------
+        
         IniciarTabGestaoUoGestor(dataUsuario.getIntp_idUo());
     }
     
     private void IniciarTabGestaoUoGestor(int nIdUO){
+        //Preenchemos UOs no combobox
+        ObservableList<Choice> choicesUOs = FXCollections.observableArrayList();
+        choicesUOs.add(new Choice(null, "Favor selecionar"));
+        
+        List<TbUnidadeOrganizacional> listaUOs = new ArrayList<TbUnidadeOrganizacional>();
+        GestaoQueries consultaUOs;
+        consultaUOs  = new GestaoQueries();  
+        
+        listaUOs = consultaUOs.listaUOs();
+        
+        for(TbUnidadeOrganizacional l : listaUOs){
+            choicesUOs.add(new Choice(l.getIdUnidadeOrganizacional(), l.getUnorNome(), l.getUnorDescricao()));         
+        }
+        cbUo.setItems(choicesUOs);
+       
+        cbUo.getSelectionModel().select(0);
+
+        //--------------FIM preencher UOs no combox ---------------
+        
+        
         int nlTblViewGeralSize = 0;
         //Devemos fazer refresh da tableView
         try {
@@ -103,7 +162,7 @@ public class FXMLUOsController implements Initializable {
         
         //Preenchemos com os valores de acordo ao Id do usuário
         List<TbUnidadeOrganizacionalGestor> listaUoGestor = new ArrayList<TbUnidadeOrganizacionalGestor>();
-        ObservableList<TbGestaoUO> obslistaTbGestaoUoGestor = FXCollections.observableArrayList();
+        //ObservableList<TbGestaoUO> obslistaTbGestaoUoGestor = FXCollections.observableArrayList();
         
         TbUnidadeOrganizacional nIdUoGestor = new TbUnidadeOrganizacional(nIdUO);
         int nIdUnidadeOrganizacionalGestor = 0;
@@ -134,6 +193,8 @@ public class FXMLUOsController implements Initializable {
         tbViewUoGestora.setItems(obslistaTbGestaoUoGestor);   
         
     }
+       /** Helper class for mapping a choice displayable in a ChoiceBox to a backing id. */
+    
     
     @FXML 
     private void btnClickCancelar(ActionEvent event) throws IOException{
@@ -145,9 +206,139 @@ public class FXMLUOsController implements Initializable {
     }
     
     @FXML
-    private void btnAdicionarUO(ActionEvent event) throws IOException{
+    private void btnAdicionarUOGestora(ActionEvent event) throws IOException{
+        Alert alert;    
+        int nSize = 0;
+        boolean bAtivo = false;
+        int nAtivo = 0;
+        //Valores nTipoCrud:
+        //1 ==> Salvar novo registro
+        //2 ==> Editar registro*/
+        
+        switch (nTipoCrud){
+            case 1:
+                tbViewUoGestora.getSelectionModel().select(0);
+                nSize = tbViewUoGestora.getSelectionModel().getSelectedItems().size();
+                if (nSize == 0){
+                    Choice choiceUo = cbUo.getSelectionModel().getSelectedItem();
+                    obslistaTbGestaoUoGestor.add(new TbGestaoUO(true, choiceUo.id /*nIdUnidadeOrganizacionalGestor*/, 
+                            choiceUo.displayString /*strUoNomeGestor*/, choiceUo.displayString2 /*strUODescricaoGestor*/ ));
+                }else{
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText(null);
+                    alert.setContentText("UO não pode ter mais de uma UO Gestora com Status = true.");
+                    alert.showAndWait();
+                }
+                
+                break;
+            case 2:
+                tbViewUoGestora.getSelectionModel().select(0);
+                nSize = tbViewUoGestora.getSelectionModel().getSelectedItems().size();
+                if (nSize>0){
+                    for (int i = 0; i <nSize; i++){
+                        TbGestaoUO entityTb = tbViewUoGestora.getSelectionModel().getSelectedItems().get(i);
+                        bAtivo = entityTb.getBoolp_UoGestorAtivo();
+                        if (true == bAtivo){
+                            nAtivo++;
+                        }
+                    }
+                }
+                if (nAtivo > 0){
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText(null);
+                    alert.setContentText("UO não pode ter mais de uma UO Gestora com Status = true.\nFavor conferir que todas as UOs Gestoras possuem status = false");
+                    alert.showAndWait();
+
+                } else {
+
+                }
+                break;
+            default:
+                break;            
+        }
+        
+        
+        
+        
+    }
+    @FXML
+    private void btnExcluirUOGestora(ActionEvent event) throws IOException{
+        Alert alert;    
+        if (null == tbViewUoGestora.getSelectionModel().getSelectedItem()){
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Registro não foi selecionado.");
+            alert.setContentText("Favor selecionar um registro da tabela");
+            alert.showAndWait();
+        }else{
+            TbGestaoUO data = tbViewUoGestora.getSelectionModel().getSelectedItem();  
+            obslistaTbGestaoUoGestor.remove(data);            
+        }
+    }
+    
+    @FXML
+    private void btnEditarUOGestora(ActionEvent event) throws IOException{
+        Alert alert;    
+        if (null == tbViewUoGestora.getSelectionModel().getSelectedItem()){
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Registro não foi selecionado.");
+            alert.setContentText("Favor selecionar um registro da tabela");
+            alert.showAndWait();
+        }else{
+            
+        }
+    }
+        
+    @FXML
+    private void btnSalvarUO(ActionEvent event) throws IOException{
+        //Valores nTipoCrud:
+        //1 ==> Salvar novo registro
+        //2 ==> Editar registro*/
+        this.nTipoCrud = nTipoCrud; 
+        
+        switch (nTipoCrud){
+            case 1: 
+                
+                
+                
+                break;
+            case 2:
+                
+               
+                
+                break;
+            default:
+                break;
+        }
+        //-------------------------------------------------------------
         
     }
        
     
 }
+
+class Choice {        
+      
+        Integer id; String displayString; String displayString2;
+        Choice(Integer id)                       { this(id, null,null); }
+        Choice(String  displayString)            { this(null, displayString); }        
+        Choice(Integer id, String displayString) { this.id = id; this.displayString = displayString;}
+        Choice(Integer id, String displayString, String displayString2) { this.id = id; this.displayString = displayString; this.displayString2 = displayString2;}
+
+        @Override public String toString() { return displayString; } 
+        @Override public boolean equals(Object o) {
+          if (this == o) return true;
+          if (o == null || getClass() != o.getClass()) return false;
+          Choice choice = (Choice) o;
+          return displayString != null && displayString.equals(choice.displayString) || id != null && id.equals(choice.id);      
+        }
+
+        @Override public int hashCode() {
+            int result = id != null ? id.hashCode() : 0;
+            result = 31 * result + (displayString != null ? displayString.hashCode() : 0);
+            return result;
+        }
+      }
