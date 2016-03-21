@@ -119,7 +119,15 @@ public class FXMLUsuarioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        btnCancelar.setCancelButton(true);        
+        btnCancelar.setCancelButton(true);    
+        
+        txtNomeCompleto.textProperty().addListener((ov, oldValue, newValue) -> {
+            txtNomeCompleto.setText(newValue.toUpperCase());
+        });
+        
+        txtLogin.textProperty().addListener((ov, oldValue, newValue) -> {
+            txtLogin.setText(newValue.toLowerCase());
+        });
     }  
     
     @FXML 

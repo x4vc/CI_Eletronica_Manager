@@ -84,6 +84,11 @@ public class FXMLUOsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         btnCancelar.setCancelButton(true);
+        
+        txtUoNome.textProperty().addListener((ov, oldValue, newValue) -> {
+            txtUoNome.setText(newValue.toUpperCase());
+        });
+        
     }
     
     public void setVariaveisAmbienteFXMLUO(final FXMLCI_Eletronica_ManagerController mainController, TbGestaoUO dataUsuario, int nTipoCrud){

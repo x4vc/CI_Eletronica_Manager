@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -312,6 +313,15 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
                 
                 //clear_telas();
                 IniciarTabGestaoUsuarios();
+                
+                Platform.runLater(new Runnable(){
+                    @Override
+                    public void run(){
+                        tbViewUsuarios.requestFocus();
+                        tbViewUsuarios.getSelectionModel().select(0);
+                        tbViewUsuarios.getFocusModel().focus(0);
+                    }
+                });
 //                                
             }catch (IOException ex) {
                 Logger.getLogger(FXMLCI_Eletronica_ManagerController.class.getName()).log(Level.SEVERE, null, ex);
@@ -384,6 +394,20 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL);     //Window Parent fica inativo
                 stage.showAndWait();
+                
+                //clear telas
+                IniciarTabGestaoUOs();
+                
+                Platform.runLater(new Runnable(){
+                    @Override
+                    public void run(){
+                        tbViewUOs.requestFocus();
+                        tbViewUOs.getSelectionModel().select(0);
+                        tbViewUOs.getFocusModel().focus(0);
+                    }
+                });
+                
+                
 //                                
             }catch (IOException ex) {
                 Logger.getLogger(FXMLCI_Eletronica_ManagerController.class.getName()).log(Level.SEVERE, null, ex);
