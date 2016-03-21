@@ -6,7 +6,6 @@
 package AddEdit;
 
 import Entities.TbGestaoUO;
-import Entities.TbGestaoUsuarios;
 import Entities.TbUnidadeOrganizacional;
 import Entities.TbUnidadeOrganizacionalGestor;
 import Queries.GestaoQueries;
@@ -16,16 +15,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -33,10 +27,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  * FXML Controller class
@@ -130,7 +124,7 @@ public class FXMLUOsController implements Initializable {
     private void IniciarTabGestaoUoGestor(int nIdUO){
         //Preenchemos UOs no combobox
         ObservableList<Choice> choicesUOs = FXCollections.observableArrayList();
-        choicesUOs.add(new Choice(null, "Favor selecionar"));
+        choicesUOs.add(new Choice(null, "Favor selecionar UO Gestora"));
         
         List<TbUnidadeOrganizacional> listaUOs = new ArrayList<TbUnidadeOrganizacional>();
         GestaoQueries consultaUOs;
@@ -244,7 +238,7 @@ public class FXMLUOsController implements Initializable {
                         }
                     }
                 }
-                if (nAtivo > 0){
+                if (nAtivo >= 1){
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
                     alert.setHeaderText(null);
@@ -294,27 +288,203 @@ public class FXMLUOsController implements Initializable {
         
     @FXML
     private void btnSalvarUO(ActionEvent event) throws IOException{
+        boolean bCampos = false;
+        Stage stage;
+        
         //Valores nTipoCrud:
         //1 ==> Salvar novo registro
-        //2 ==> Editar registro*/
-        this.nTipoCrud = nTipoCrud; 
-        
+        //2 ==> Editar registro*/       
         switch (nTipoCrud){
             case 1: 
-                
-                
-                
+                    bCampos = Verificar_campos(nTipoCrud);
+                    if (true == bCampos){
+                        SalvarNovaUO();
+                        // get a handle to the stage
+                        stage = (Stage) btnSalvar.getScene().getWindow();
+                        // do what you have to do
+                        stage.close();
+                    }
                 break;
-            case 2:
                 
-               
-                
+            case 2:                
+                    bCampos = Verificar_campos(nTipoCrud);   
+                    bCampos = Verificar_campos(nTipoCrud);
+                    if (true == bCampos){
+                        SalvarEdicaoUO(Integer.parseInt(txtIdUO.getText().trim()));
+                        // get a handle to the stage
+                        stage = (Stage) btnSalvar.getScene().getWindow();
+                        // do what you have to do
+                        stage.close();
+                    }
                 break;
+                
             default:
                 break;
         }
+        
         //-------------------------------------------------------------
         
+    }
+    private void SalvarNovaUO(){
+        Alert alert;
+        
+        String strNomeUO = txtUoNome.getText();
+        String strDescricaoUO = txtUoDescrição.getText();
+        boolean bStatusUO = true;
+        String strStatusUO = cmbAtivoUo.getValue().toString();
+        if (0==strStatusUO.compareTo("Ativado")){
+            bStatusUO = true;
+        }else{
+            bStatusUO = false;
+        }
+        //------------ Iniciamos transaction ------------------------
+        EntityManager em;
+        EntityManagerFactory emf;
+        
+        emf = Persistence.createEntityManagerFactory("CI_Eletronica_ManagerPU");
+        em = emf.createEntityManager();        
+        em.getTransaction().begin();
+        
+        
+        try{
+            TbUnidadeOrganizacional newUO = new TbUnidadeOrganizacional();
+            //-----------------------------------------------------------
+            newUO.setUnorNome(strNomeUO);
+            newUO.setUnorDescricao(strDescricaoUO);
+            newUO.setUnorAtivo(bStatusUO);
+
+            em.persist(newUO);
+            em.flush();
+
+
+            long IdUO = newUO.getIdUnidadeOrganizacional();
+            int nIdUO = (int)IdUO;
+            
+            TbUnidadeOrganizacional nIdUnidadeOrganizacional = new TbUnidadeOrganizacional(nIdUO);
+            
+            int nSizeListaUO = 0;
+            nSizeListaUO = this.obslistaTbGestaoUoGestor.size();
+            for (int i = 0; i<nSizeListaUO;i++){
+                TbUnidadeOrganizacionalGestor newUOGestor = new TbUnidadeOrganizacionalGestor();
+                
+                TbGestaoUO entityTbGestaoUO = this.obslistaTbGestaoUoGestor.get(i);                
+                
+                TbUnidadeOrganizacional nlIdUOGestor = new TbUnidadeOrganizacional(entityTbGestaoUO.getIntp_idUoGe());
+
+                newUOGestor.setIdUnidadeOrganizacional(nIdUnidadeOrganizacional);
+                newUOGestor.setIdUoGestor(nlIdUOGestor);                
+                newUOGestor.setUogeAtivo(true);
+
+                em.persist(newUOGestor);
+            }            
+            
+        }catch (javax.persistence.PersistenceException e){
+            System.out.println(e);
+            em.close();
+            emf.close();
+            
+        }
+        em.getTransaction().commit();            
+        em.close();
+        emf.close();
+        
+        //-----------------------------------------------------------
+        alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Informação");
+        alert.setHeaderText("Registro foi salvo.");
+        alert.setContentText("Nova UO foi salvo com sucesso");
+        alert.showAndWait();
+    }
+    
+    private void SalvarEdicaoUO(int nIdUO){
+        Alert alert;
+        
+        alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Informação");
+        alert.setHeaderText("Registro da UO foi editado e salvo.");
+        alert.setContentText("Salvar edição do registro");
+        alert.showAndWait();   
+        
+    }
+    
+    private Boolean Verificar_campos(int nTipoCrud){
+        Alert alert;
+        boolean bEstado= true;
+        
+        String strUOName = txtUoNome.getText();
+        strUOName = strUOName.trim();
+        
+        String strUODescricao = txtUoDescrição.getText();
+        strUODescricao = strUODescricao.trim();
+        
+        
+        int nSizeListaUO = 0;        
+        nSizeListaUO = this.obslistaTbGestaoUoGestor.size();
+        //----------------------------------------------------------
+        //Verificamos se TableView possui mais de uma UO com status = true
+        int nSize = 0;
+        int nAtivo = 0;
+        boolean bAtivo = false;
+        tbViewUoGestora.getSelectionModel().select(0);
+        nSize = tbViewUoGestora.getSelectionModel().getSelectedItems().size();
+        if (nSize>0){
+            for (int i = 0; i <nSize; i++){
+                TbGestaoUO entityTb = tbViewUoGestora.getSelectionModel().getSelectedItems().get(i);
+                bAtivo = entityTb.getBoolp_UoGestorAtivo();
+                if (true == bAtivo){
+                    nAtivo++;
+                }
+            }
+        }
+        //----------------------------------------------------------
+        
+        if (strUOName.isEmpty()){
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta");
+            alert.setHeaderText("Dados inconsistentes");
+            alert.setContentText("Usuário deve preencher nome da UO.");
+            alert.showAndWait(); 
+            
+            bEstado = false;
+            return bEstado;            
+        }else if (strUODescricao.isEmpty()){
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta");
+            alert.setHeaderText("Dados inconsistentes");
+            alert.setContentText("Usuário deve preencher descrição da UO.");
+            alert.showAndWait();
+            bEstado = false;
+            
+            return bEstado;                        
+                               
+        }else if ((nSizeListaUO <=0)){
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta");
+            alert.setHeaderText("Dados inconsistentes");
+            alert.setContentText("UO deve estar relacionado com ao menos uma UO Gestora.");
+            alert.showAndWait();   
+            
+            bEstado = false;
+            return bEstado;            
+        
+        }else if (nAtivo > 1){
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText(null);
+            alert.setContentText("UO não pode ter mais de uma UO Gestora com Status = true.\nFavor conferir que todas as UOs Gestoras possuem status = false");
+            alert.showAndWait();
+            
+            bEstado = false;
+            return bEstado;            
+
+        } 
+//        alert = new Alert(Alert.AlertType.WARNING);
+//        alert.setTitle("Alerta");
+//        alert.setHeaderText("Dados inconsistentes");
+//        alert.setContentText("UO não selecionado ou Login já existe no banco de dados  ");
+//        alert.showAndWait();        
+            
+        return bEstado;
     }
        
     

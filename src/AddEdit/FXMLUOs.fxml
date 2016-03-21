@@ -26,9 +26,9 @@
       <Label layoutX="27.0" layoutY="149.0" text="Status:" AnchorPane.leftAnchor="10.0" />
       <Button fx:id="btnSalvar" layoutX="55.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnSalvarUO" text="Salvar" AnchorPane.leftAnchor="20.0" />
       <Button fx:id="btnCancelar" layoutX="142.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnClickCancelar" text="Cancelar" />
-      <Button fx:id="btnAdicionarUOGestora" layoutX="290.0" layoutY="204.0" mnemonicParsing="false" onAction="#btnAdicionarUOGestora" text="Adicionar UO Gestora" />
+      <Button fx:id="btnAdicionarUOGestora" layoutX="446.0" layoutY="204.0" mnemonicParsing="false" onAction="#btnAdicionarUOGestora" text="Adicionar UO Gestora" />
       <Button fx:id="btnExcluirUOGestora" layoutX="446.0" layoutY="253.0" mnemonicParsing="false" onAction="#btnExcluirUOGestora" prefHeight="25.0" prefWidth="132.0" text="Excluir UO Gestora" />
-      <ComboBox fx:id="cbUo" layoutX="8.0" layoutY="204.0" prefHeight="25.0" prefWidth="244.0" />
+      <ComboBox fx:id="cbUo" layoutX="8.0" layoutY="204.0" prefHeight="25.0" prefWidth="430.0" />
       <Button fx:id="btnEditarUOGestora" layoutX="446.0" layoutY="288.0" mnemonicParsing="false" onAction="#btnEditarUOGestora" prefHeight="25.0" prefWidth="132.0" text="Editar UO Gestora" />
    </children>
 </AnchorPane>
