@@ -15,11 +15,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -27,6 +32,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -176,7 +184,7 @@ public class FXMLUOsController implements Initializable {
         listaUoGestor = consulta.getlistaUoGestor(nIdUoGestor);
         
         for(TbUnidadeOrganizacionalGestor l : listaUoGestor){
-            nIdUnidadeOrganizacionalGestor = l.getIdUoge();
+            nIdUnidadeOrganizacionalGestor = l.getIdUoGestor().getIdUnidadeOrganizacional();
             strUoNomeGestor = l.getIdUoGestor().getUnorNome();
             strUODescricaoGestor = l.getIdUoGestor().getUnorDescricao();
             bAtivoUoGestor = l.getUogeAtivo();
@@ -287,6 +295,45 @@ public class FXMLUOsController implements Initializable {
             alert.setContentText("Favor selecionar um registro da tabela");
             alert.showAndWait();
         }else{
+            try{
+                TbGestaoUO entitiyTbGestaoUo= tbViewUoGestora.getSelectionModel().getSelectedItem();
+                int nlIndex = tbViewUoGestora.getSelectionModel().getSelectedIndex();
+                Scene scene;
+                scene = new Scene(new AnchorPane());
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddEdit/FXMLEditUOGestora.fxml"));
+                scene.setRoot((Parent) loader.load());
+                
+                AddEdit.FXMLEditUOGestoraController usuarioController = loader.<AddEdit.FXMLEditUOGestoraController>getController(); 
+                usuarioController.setVariaveisAmbienteFXMLEditUOGestora(this/*mainController*/, entitiyTbGestaoUo);
+                
+                Stage stage = new Stage();
+                stage.setTitle("Editar Status da UO Gestora");
+                //set icon
+                stage.getIcons().add(new Image("/Resources/administrator1-add-16x16.gif"));
+
+                stage.setScene(scene);
+                stage.initModality(Modality.APPLICATION_MODAL);     //Window Parent fica inativo
+                stage.showAndWait();
+                
+                boolean bButtonSaveClicked = false;
+                bButtonSaveClicked = usuarioController.isbButtonSalvarClicked();
+                
+                TbGestaoUO entidadeTbGestaoUO;
+                entidadeTbGestaoUO = usuarioController.getgEntityTbGestaoUO();
+                
+                if (bButtonSaveClicked){
+                    System.out.println();
+                    if (null != entidadeTbGestaoUO){
+                        obslistaTbGestaoUoGestor.set(nlIndex,entidadeTbGestaoUO);
+                        System.out.println();
+                        //PreencherTableView(obslistaTbGestaoUO);
+                    }
+                }
+                System.out.println();
+//                                
+            }catch (IOException ex) {
+                Logger.getLogger(FXMLCI_Eletronica_ManagerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
         }
     }
