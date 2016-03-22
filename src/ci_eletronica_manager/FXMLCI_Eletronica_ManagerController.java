@@ -538,7 +538,7 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
         listaUoGestor = consulta.getlistaUoGestor(nIdUoGestor);
         
         for(TbUnidadeOrganizacionalGestor l : listaUoGestor){
-            nIdUnidadeOrganizacionalGestor = l.getIdUoge();
+            nIdUnidadeOrganizacionalGestor = l.getIdUoGestor().getIdUnidadeOrganizacional();
             strUoNomeGestor = l.getIdUoGestor().getUnorNome();
             strUODescricaoGestor = l.getIdUoGestor().getUnorDescricao();
             bAtivoUoGestor = l.getUogeAtivo();
