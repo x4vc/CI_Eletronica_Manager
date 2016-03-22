@@ -325,12 +325,12 @@ public class FXMLUOsController implements Initializable {
                     System.out.println();
                     if (null != entidadeTbGestaoUO){
                         obslistaTbGestaoUoGestor.set(nlIndex,entidadeTbGestaoUO);
-                        System.out.println();
-                        //PreencherTableView(obslistaTbGestaoUO);
+                        //System.out.println();
+                        
                     }
                 }
-                System.out.println();
-//                                
+                //System.out.println();
+                               
             }catch (IOException ex) {
                 Logger.getLogger(FXMLCI_Eletronica_ManagerController.class.getName()).log(Level.SEVERE, null, ex);
             }
