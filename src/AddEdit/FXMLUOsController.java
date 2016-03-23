@@ -119,11 +119,13 @@ public class FXMLUOsController implements Initializable {
             case 1: 
                 
                 btnEditarUOGestora.setVisible(false);
+                btnExcluirUOGestora.setVisible(true);
                 
                 break;
             case 2:
                 
                 btnEditarUOGestora.setVisible(true);
+                btnExcluirUOGestora.setVisible(false);
                 
                 break;
             default:
@@ -309,7 +311,7 @@ public class FXMLUOsController implements Initializable {
                 Stage stage = new Stage();
                 stage.setTitle("Editar Status da UO Gestora");
                 //set icon
-                stage.getIcons().add(new Image("/Resources/administrator1-add-16x16.gif"));
+                stage.getIcons().add(new Image("/Resources/group_half_add-24.png"));
 
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL);     //Window Parent fica inativo
@@ -360,7 +362,7 @@ public class FXMLUOsController implements Initializable {
                 
             case 2:                
                     bCampos = Verificar_campos(nTipoCrud);   
-                    bCampos = Verificar_campos(nTipoCrud);
+                    //bCampos = Verificar_campos(nTipoCrud);
                     if (true == bCampos){
                         SalvarEdicaoUO(Integer.parseInt(txtIdUO.getText().trim()));
                         // get a handle to the stage

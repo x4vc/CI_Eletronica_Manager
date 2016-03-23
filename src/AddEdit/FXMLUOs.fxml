@@ -24,8 +24,8 @@
       <Label layoutX="27.0" layoutY="70.0" text="UO nome:" AnchorPane.leftAnchor="10.0" />
       <Label layoutX="27.0" layoutY="112.0" text="UO descrição:" AnchorPane.leftAnchor="10.0" />
       <Label layoutX="27.0" layoutY="149.0" text="Status:" AnchorPane.leftAnchor="10.0" />
-      <Button fx:id="btnSalvar" layoutX="55.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnSalvarUO" text="Salvar" AnchorPane.leftAnchor="20.0" />
-      <Button fx:id="btnCancelar" layoutX="142.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnClickCancelar" text="Cancelar" />
+      <Button fx:id="btnSalvar" layoutX="149.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnSalvarUO" prefWidth="65.0" text="Salvar" AnchorPane.leftAnchor="149.0" />
+      <Button fx:id="btnCancelar" layoutX="375.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnClickCancelar" prefWidth="65.0" text="Cancelar" />
       <Button fx:id="btnAdicionarUOGestora" layoutX="446.0" layoutY="204.0" mnemonicParsing="false" onAction="#btnAdicionarUOGestora" text="Adicionar UO Gestora" />
       <Button fx:id="btnExcluirUOGestora" layoutX="446.0" layoutY="253.0" mnemonicParsing="false" onAction="#btnExcluirUOGestora" prefHeight="25.0" prefWidth="132.0" text="Excluir UO Gestora" />
       <ComboBox fx:id="cbUo" layoutX="8.0" layoutY="204.0" prefHeight="25.0" prefWidth="430.0" />

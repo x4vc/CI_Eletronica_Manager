@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="222.0" prefWidth="358.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="AddEdit.FXMLEditUOGestoraController">
+   <children>
+      <Label layoutX="24.0" layoutY="31.0" text="Id:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
+      <Label layoutX="14.0" layoutY="71.0" text="UO Nome:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="45.0" />
+      <Label layoutX="52.0" layoutY="117.0" text="UO Descrição:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="75.0" />
+      <Label layoutX="52.0" layoutY="183.0" text="UO Status:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="105.0" />
+      <Button fx:id="btnSalvar" layoutX="55.0" layoutY="160.0" mnemonicParsing="false" onAction="#btnClickSalvar" prefWidth="70.0" text="Salvar" />
+      <Button fx:id="btnCancelar" layoutX="205.0" layoutY="160.0" mnemonicParsing="false" onAction="#btnClickCancelar" prefWidth="70.0" text="Cancelar" />
+      <TextField fx:id="txtIdUOGestora" layoutX="90.0" layoutY="11.0" prefHeight="25.0" prefWidth="38.0" />
+      <TextField fx:id="txtUONome" layoutX="90.0" layoutY="41.0" prefHeight="25.0" prefWidth="185.0" />
+      <TextField fx:id="txtUODescricao" layoutX="90.0" layoutY="71.0" prefHeight="25.0" prefWidth="250.0" />
+      <ComboBox fx:id="cbUOStatus" layoutX="90.0" layoutY="101.0" prefHeight="25.0" prefWidth="140.0" />
+   </children>
+</AnchorPane>
