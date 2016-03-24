@@ -255,7 +255,8 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
             
             obslistaTbGestaoUsuarioPerfilUo.add(new TbGestaoUsuarios(bAtivoUsuarioPerfilUo, nIdUsuarioPerfilUo, strUoNome, strUODescricao, strPerfil, nIdUsuarioPerfil.getIdUsuarioPerfil(), nIdUO.getIdUnidadeOrganizacional()));            
         }
-        tbColIdUoPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Integer>("intp_idUsuarioPerfilUo"));
+        //tbColIdUoPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Integer>("intp_idUsuarioPerfilUo"));
+        tbColIdUoPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,Integer>("intp_idUnidadeOrganizacional"));
         tbColUoNome.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoNome"));
         tbColUoDescricao.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_UoDescricao"));
         tbColPerfil.setCellValueFactory(new PropertyValueFactory<TbGestaoUsuarios,String>("strp_PerfilNome"));
@@ -525,6 +526,7 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
         List<TbUnidadeOrganizacionalGestor> listaUoGestor = new ArrayList<TbUnidadeOrganizacionalGestor>();
         ObservableList<TbGestaoUO> obslistaTbGestaoUoGestor = FXCollections.observableArrayList();
         
+        int nIdUOGE = 0;
         TbUnidadeOrganizacional nIdUoGestor = new TbUnidadeOrganizacional(nIdUO);
         int nIdUnidadeOrganizacionalGestor = 0;
         String strUoNomeGestor = "";
@@ -538,12 +540,13 @@ public class FXMLCI_Eletronica_ManagerController implements Initializable {
         listaUoGestor = consulta.getlistaUoGestor(nIdUoGestor);
         
         for(TbUnidadeOrganizacionalGestor l : listaUoGestor){
+            nIdUOGE = l.getIdUoge();
             nIdUnidadeOrganizacionalGestor = l.getIdUoGestor().getIdUnidadeOrganizacional();
             strUoNomeGestor = l.getIdUoGestor().getUnorNome();
             strUODescricaoGestor = l.getIdUoGestor().getUnorDescricao();
             bAtivoUoGestor = l.getUogeAtivo();
             
-            obslistaTbGestaoUoGestor.add(new TbGestaoUO(bAtivoUoGestor, nIdUnidadeOrganizacionalGestor, strUoNomeGestor, strUODescricaoGestor ));            
+            obslistaTbGestaoUoGestor.add(new TbGestaoUO(bAtivoUoGestor, nIdUnidadeOrganizacionalGestor, strUoNomeGestor, strUODescricaoGestor, nIdUOGE ));            
         }
         tbColIdUOGestora.setCellValueFactory(new PropertyValueFactory<TbGestaoUO,Integer>("intp_idUoGe"));
         tbColNomeUOGestora.setCellValueFactory(new PropertyValueFactory<TbGestaoUO,String>("strp_UoNomeGestor"));

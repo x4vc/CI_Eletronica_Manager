@@ -24,6 +24,7 @@ public class TbGestaoUO {
     private BooleanProperty boolp_UoAtivo;
     
     //VAriaveis para TbUnidadeOrganizacionalGestor
+    private IntegerProperty intp_id;    //variavel que possui o Id que contem primary key
     private IntegerProperty intp_idUoGe;
     private StringProperty strp_UoNomeGestor;
     private StringProperty strp_UoDescricaoGestor;    
@@ -37,12 +38,23 @@ public class TbGestaoUO {
         
     }
     
-    public TbGestaoUO(boolean bUoAtivo, Integer nIdUO, String strUoNome, String strUoDescricao ) {
+    public TbGestaoUO(boolean bUoAtivo, Integer nIdUO, String strUoNome, String strUoDescricao, int nIdUOGE ) {
         boolp_UoGestorAtivo = new SimpleBooleanProperty(bUoAtivo);
         intp_idUoGe = new SimpleIntegerProperty(nIdUO);
         strp_UoNomeGestor = new SimpleStringProperty(strUoNome);
         strp_UoDescricaoGestor = new SimpleStringProperty(strUoDescricao); 
+        intp_id = new SimpleIntegerProperty(nIdUOGE);
     }
+
+    public Integer getIntp_id() {
+        return intp_id.getValue();
+    }
+
+    public void setIntp_id(Integer intp_id) {
+        this.intp_id.setValue(intp_id);
+    }
+    
+    
 
     public Integer getIntp_idUoGe() {
         return intp_idUoGe.getValue();

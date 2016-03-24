@@ -45,6 +45,13 @@ public class GestaoQueries {
                 .getSingleResult();
         
     }
+    public TbUnidadeOrganizacionalGestor getDadosUOGestor(int nIdTbUOGestor) {
+        
+        return em.createNamedQuery("TbUnidadeOrganizacionalGestor.findByIdUoge",TbUnidadeOrganizacionalGestor.class)
+                .setParameter("idUoge", nIdTbUOGestor )
+                .getSingleResult();
+        
+    }
     public List<TbUsuario> listaUsuarios() {
         
          //return em.createNamedQuery("TbUsuario.findAll",TbUsuario.class).getResultList();

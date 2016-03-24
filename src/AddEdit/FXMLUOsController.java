@@ -117,13 +117,15 @@ public class FXMLUOsController implements Initializable {
         
         switch (nTipoCrud){
             case 1: 
-                
+                cbUo.setVisible(true);
+                btnAdicionarUOGestora.setVisible(true);
                 btnEditarUOGestora.setVisible(false);
                 btnExcluirUOGestora.setVisible(true);
                 
                 break;
             case 2:
-                
+                cbUo.setVisible(false);
+                btnAdicionarUOGestora.setVisible(false);
                 btnEditarUOGestora.setVisible(true);
                 btnExcluirUOGestora.setVisible(false);
                 
@@ -193,7 +195,7 @@ public class FXMLUOsController implements Initializable {
             strUODescricaoGestor = l.getIdUoGestor().getUnorDescricao();
             bAtivoUoGestor = l.getUogeAtivo();
             
-            obslistaTbGestaoUoGestor.add(new TbGestaoUO(bAtivoUoGestor, nIdUnidadeOrganizacionalGestor, strUoNomeGestor, strUODescricaoGestor ));            
+            obslistaTbGestaoUoGestor.add(new TbGestaoUO(bAtivoUoGestor, nIdUnidadeOrganizacionalGestor, strUoNomeGestor, strUODescricaoGestor, nIdUOGE ));            
         }
         tbColIdUOGestora.setCellValueFactory(new PropertyValueFactory<TbGestaoUO,Integer>("intp_idUoGe"));
         tbColNomeUOGestora.setCellValueFactory(new PropertyValueFactory<TbGestaoUO,String>("strp_UoNomeGestor"));
@@ -233,7 +235,7 @@ public class FXMLUOsController implements Initializable {
                 if (nSize == 0){
                     Choice choiceUo = cbUo.getSelectionModel().getSelectedItem();
                     obslistaTbGestaoUoGestor.add(new TbGestaoUO(true, choiceUo.id /*nIdUnidadeOrganizacionalGestor*/, 
-                            choiceUo.displayString /*strUoNomeGestor*/, choiceUo.displayString2 /*strUODescricaoGestor*/ ));
+                            choiceUo.displayString /*strUoNomeGestor*/, choiceUo.displayString2 /*strUODescricaoGestor*/ , 0 /*Id = 0 caso seja novo registro*/));
                 }else{
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
@@ -472,8 +474,9 @@ public class FXMLUOsController implements Initializable {
         em = emf.createEntityManager();        
         
         
-        GestaoQueries consulta;
+        GestaoQueries consulta;        
         consulta  = new GestaoQueries(); 
+        
         
         try{
             em.getTransaction().begin();
@@ -486,12 +489,17 @@ public class FXMLUOsController implements Initializable {
             
             //Agora atualizamos as UOs gestoras
             int nSizeListaUO = 0;
-            int nId = 0;
+            int nTbIdUOGestor = 0;
             nSizeListaUO = this.obslistaTbGestaoUoGestor.size();
             for (int i = 0; i<nSizeListaUO;i++){
-                TbGestaoUO entityTbGestaoUO = this.obslistaTbGestaoUoGestor.get(i);
-                //nId = entityTbGestaoUO.
+                TbGestaoUO entityTbGestaoUO = this.obslistaTbGestaoUoGestor.get(i);                
+                //TbUnidadeOrganizacional nTbIdUOGestor = new TbUnidadeOrganizacional(entityTbGestaoUO.getIntp_id());
+                nTbIdUOGestor = entityTbGestaoUO.getIntp_id();
                 
+                consulta  = new GestaoQueries(); 
+                TbUnidadeOrganizacionalGestor entidadeUOGestor = consulta.getDadosUOGestor(nTbIdUOGestor);
+                entidadeUOGestor.setUogeAtivo(entityTbGestaoUO.getBoolp_UoGestorAtivo());
+                em.merge(entidadeUOGestor);                
             }
             
         }catch(javax.persistence.PersistenceException e){
