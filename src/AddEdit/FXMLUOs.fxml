@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="587.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddEdit.FXMLUOsController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddEdit.FXMLUOsController">
    <children>
       <TextField fx:id="txtIdUO" layoutX="106.0" layoutY="23.0" prefWidth="40.0" />
       <TextField fx:id="txtUoNome" layoutX="106.0" layoutY="66.0" prefWidth="250.0" />
@@ -26,9 +27,30 @@
       <Label layoutX="27.0" layoutY="149.0" text="Status:" AnchorPane.leftAnchor="10.0" />
       <Button fx:id="btnSalvar" layoutX="149.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnSalvarUO" prefWidth="65.0" text="Salvar" AnchorPane.leftAnchor="149.0" />
       <Button fx:id="btnCancelar" layoutX="375.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnClickCancelar" prefWidth="65.0" text="Cancelar" />
-      <Button fx:id="btnAdicionarUOGestora" layoutX="446.0" layoutY="204.0" mnemonicParsing="false" onAction="#btnAdicionarUOGestora" text="Adicionar UO Gestora" />
-      <Button fx:id="btnExcluirUOGestora" layoutX="446.0" layoutY="253.0" mnemonicParsing="false" onAction="#btnExcluirUOGestora" prefHeight="25.0" prefWidth="132.0" text="Excluir UO Gestora" />
+      <Button fx:id="btnAdicionarUOGestora" layoutX="446.0" layoutY="204.0" mnemonicParsing="false" onAction="#btnAdicionarUOGestora" prefWidth="155.0" text="Adicionar UO Gestora">
+         <graphic>
+            <ImageView>
+               <image>
+                  <Image url="@../Resources/database-add-16x16.gif" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="btnExcluirUOGestora" layoutX="446.0" layoutY="253.0" mnemonicParsing="false" onAction="#btnExcluirUOGestora" prefHeight="25.0" prefWidth="155.0" text="Excluir UO Gestora">
+         <graphic>
+            <ImageView>
+               <image>
+                  <Image url="@../Resources/database-delete-16x16.gif" />
+               </image>
+            </ImageView>
+         </graphic></Button>
       <ComboBox fx:id="cbUo" layoutX="8.0" layoutY="204.0" prefHeight="25.0" prefWidth="430.0" />
-      <Button fx:id="btnEditarUOGestora" layoutX="446.0" layoutY="288.0" mnemonicParsing="false" onAction="#btnEditarUOGestora" prefHeight="25.0" prefWidth="132.0" text="Editar UO Gestora" />
+      <Button fx:id="btnEditarUOGestora" layoutX="446.0" layoutY="288.0" mnemonicParsing="false" onAction="#btnEditarUOGestora" prefHeight="25.0" prefWidth="155.0" text="Editar UO Gestora">
+         <graphic>
+            <ImageView>
+               <image>
+                  <Image url="@../Resources/user9-edit-16x16.gif" />
+               </image>
+            </ImageView>
+         </graphic></Button>
    </children>
 </AnchorPane>

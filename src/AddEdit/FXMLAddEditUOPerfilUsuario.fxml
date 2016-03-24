@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -11,8 +12,22 @@
       <ChoiceBox fx:id="chbPerfilUsuario" layoutX="300.0" layoutY="40.0" prefHeight="25.0" prefWidth="174.0" />
       <Button fx:id="btnOK" layoutX="199.0" layoutY="333.0" mnemonicParsing="false" onAction="#btnClickOk" prefWidth="94.0" text="OK" />
       <Button fx:id="btnCancelar" layoutX="307.0" layoutY="333.0" mnemonicParsing="false" onAction="#btnClickCancelar" prefWidth="94.0" text="Cancelar" />
-      <Button fx:id="btnAdicionar" layoutX="501.0" layoutY="40.0" mnemonicParsing="false" onAction="#btnClickAddUO" text="Adicionar Item" AnchorPane.rightAnchor="10.0" />
-      <Button fx:id="btDeletar" layoutX="501.0" layoutY="79.0" mnemonicParsing="false" onAction="#btnClickDeleteUO" prefWidth="94.0" text="Deletar Item" AnchorPane.rightAnchor="10.0" />
+      <Button fx:id="btnAdicionar" layoutX="501.0" layoutY="40.0" mnemonicParsing="false" onAction="#btnClickAddUO" prefWidth="115.0" text="Adicionar Item" AnchorPane.rightAnchor="10.0">
+         <graphic>
+            <ImageView>
+               <image>
+                  <Image url="@../Resources/add_16x16.gif" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="btDeletar" layoutX="501.0" layoutY="79.0" mnemonicParsing="false" onAction="#btnClickDeleteUO" prefWidth="115.0" text="Deletar Item" AnchorPane.rightAnchor="10.0">
+         <graphic>
+            <ImageView>
+               <image>
+                  <Image url="@../Resources/minus_red.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
       <ComboBox fx:id="cbUo" layoutX="31.0" layoutY="40.0" prefHeight="25.0" prefWidth="250.0" />
       <TableView fx:id="tbviewListaUoPerfil" layoutX="31.0" layoutY="79.0" prefHeight="244.0" prefWidth="444.0">
         <columns>

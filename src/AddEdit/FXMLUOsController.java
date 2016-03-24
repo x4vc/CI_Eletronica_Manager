@@ -173,6 +173,7 @@ public class FXMLUOsController implements Initializable {
         List<TbUnidadeOrganizacionalGestor> listaUoGestor = new ArrayList<TbUnidadeOrganizacionalGestor>();
         //ObservableList<TbGestaoUO> obslistaTbGestaoUoGestor = FXCollections.observableArrayList();
         
+        int nIdUOGE = 0;
         TbUnidadeOrganizacional nIdUoGestor = new TbUnidadeOrganizacional(nIdUO);
         int nIdUnidadeOrganizacionalGestor = 0;
         String strUoNomeGestor = "";
@@ -186,6 +187,7 @@ public class FXMLUOsController implements Initializable {
         listaUoGestor = consulta.getlistaUoGestor(nIdUoGestor);
         
         for(TbUnidadeOrganizacionalGestor l : listaUoGestor){
+            nIdUOGE = l.getIdUoge();
             nIdUnidadeOrganizacionalGestor = l.getIdUoGestor().getIdUnidadeOrganizacional();
             strUoNomeGestor = l.getIdUoGestor().getUnorNome();
             strUODescricaoGestor = l.getIdUoGestor().getUnorDescricao();
@@ -452,6 +454,60 @@ public class FXMLUOsController implements Initializable {
     
     private void SalvarEdicaoUO(int nIdUO){
         Alert alert;
+        
+        String strNomeUO = txtUoNome.getText();
+        String strDescricaoUO = txtUoDescrição.getText();
+        boolean bStatusUO = true;
+        String strStatusUO = cmbAtivoUo.getValue().toString();
+        if (0==strStatusUO.compareTo("Ativado")){
+            bStatusUO = true;
+        }else{
+            bStatusUO = false;
+        }
+        //------------ Iniciamos transaction ------------------------
+        EntityManager em;
+        EntityManagerFactory emf;
+        
+        emf = Persistence.createEntityManagerFactory("CI_Eletronica_ManagerPU");
+        em = emf.createEntityManager();        
+        
+        
+        GestaoQueries consulta;
+        consulta  = new GestaoQueries(); 
+        
+        try{
+            em.getTransaction().begin();
+            
+            TbUnidadeOrganizacional entityTbUO = consulta.getDadosUO(nIdUO);
+            entityTbUO.setUnorNome(strNomeUO);
+            entityTbUO.setUnorDescricao(strDescricaoUO);
+            entityTbUO.setUnorAtivo(bStatusUO);
+            em.merge(entityTbUO);
+            
+            //Agora atualizamos as UOs gestoras
+            int nSizeListaUO = 0;
+            int nId = 0;
+            nSizeListaUO = this.obslistaTbGestaoUoGestor.size();
+            for (int i = 0; i<nSizeListaUO;i++){
+                TbGestaoUO entityTbGestaoUO = this.obslistaTbGestaoUoGestor.get(i);
+                //nId = entityTbGestaoUO.
+                
+            }
+            
+        }catch(javax.persistence.PersistenceException e){
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Atualizar UO");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();  
+            em.close();
+            emf.close();
+        }
+        em.getTransaction().commit();            
+        em.close();
+        emf.close();
+        System.out.println();
+        
         
         alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Informação");
