@@ -20,7 +20,7 @@ public class CI_Eletronica_Manager extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         String strVersao = "1.0";
-        String strRelease = "27012016";
+        String strRelease = "28032016";
         Parent root = FXMLLoader.load(getClass().getResource("FXMLCI_Eletronica_Manager.fxml"));
         
         
